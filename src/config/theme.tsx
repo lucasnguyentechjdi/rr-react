@@ -38,6 +38,7 @@ export const BASE_COLORS = {
   timberWolfColor: '#DFD9D4',
   brightGray: '#E5EFF6',
   steelBlue: '#347FAD',
+  lightBlue: '#E5EFF7',
   gray: '#7A8088',
   lightGray: '#DEDEDE',
   lavenderGray: "#BDC3CB",

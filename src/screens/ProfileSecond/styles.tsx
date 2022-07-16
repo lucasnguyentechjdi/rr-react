@@ -6,6 +6,9 @@ import { adjust } from '~Root/utils';
 const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
+  contentBackground: {
+    backgroundColor: BASE_COLORS.steelBlue,
+  },
   reportContainer: {
     alignSelf: 'flex-end',
     alignItems: 'flex-start',
@@ -16,6 +19,7 @@ export default StyleSheet.create({
   textReport: {
     fontSize: adjust(10),
     textTransform: 'uppercase',
+    color: BASE_COLORS.whiteColor,
   },
   buttonGroup: {
     ...GlobalStyles.mv20,
@@ -31,12 +35,13 @@ export default StyleSheet.create({
   buttonContainerHalfStyle: {
     ...GlobalStyles.flexRow,
     ...GlobalStyles.pv10,
-    // ...GlobalStyles.ph40,
     paddingLeft: 40,
     paddingRight: 40,
     ...GlobalStyles.mb15,
     borderWidth: 1,
-    borderColor: BASE_COLORS.blackColor,
+    backgroundColor: 'transparent',
+    color: BASE_COLORS.whiteColor,
+    borderColor: BASE_COLORS.whiteColor,
     borderRadius: adjust(24),
     justifyContent: 'center',
     alignItems: 'center',
@@ -58,7 +63,7 @@ export default StyleSheet.create({
     ...GlobalStyles.h5,
     fontFamily: BASE_FONTS.semiBold,
     fontWeight: '600',
-    color: BASE_COLORS.eerieBlackColor,
+    color: BASE_COLORS.whiteColor,
   },
   textStyle: {
     textAlign: 'center',
@@ -108,18 +113,32 @@ export default StyleSheet.create({
   borderBottom: {
     borderBottomColor: BASE_COLORS.oldSilverColor,
   },
-  locationContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    flex: 0.8,
-    overflow: 'hidden',
+  askDetailContent: {
+    ...GlobalStyles.p10,
+    width: '100%',
+    height: '60%',
+    backgroundColor: BASE_COLORS.steelBlue,
   },
   title: {
     flex: 0.9,
   },
+  locationContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    flex: 0.9,
+  },
+  locationText: {
+    flex: 0.9,
+    fontFamily: BASE_FONTS.notoSanRegular,
+    lineHeight: adjust(19),
+  },
   dateContainer: {
     display: 'flex',
     flexDirection: 'row',
-    flex: 0.8,
+    flex: 0.9,
+  },
+  textNotoSans: {
+    fontFamily: BASE_FONTS.notoSanRegular,
+    lineHeight: adjust(19),
   },
 });

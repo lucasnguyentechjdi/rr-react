@@ -1,8 +1,6 @@
 import { BASE_COLORS, GlobalStyles } from '~Root/config';
 import {
-  Button,
   FeedBlockItems,
-  HeaderLargeBlue,
   Icon,
   Loading,
   LoadingSecondary,
@@ -10,25 +8,14 @@ import {
   ModalDialogRefer,
   Paragraph,
 } from '~Root/components';
-import {
-  Dimensions,
-  NativeScrollEvent,
-  NativeSyntheticEvent,
-  ScrollView,
-  ScrollViewBase,
-  Share,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
-import React, {useEffect, useMemo, useState} from 'react';
-import {adjust, buildShareLink} from '~Root/utils';
-import {getFeed, setIndexAsk, setNetworkToIntroduce, setQuestion} from '~Root/services/feed/actions';
-import {useDispatch, useSelector} from 'react-redux';
+import { Dimensions, NativeScrollEvent, NativeSyntheticEvent, Share, TouchableOpacity, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { adjust, buildShareLink } from '~Root/utils';
+import { getFeed, setIndexAsk, setNetworkToIntroduce, setQuestion } from '~Root/services/feed/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { AppRoute } from '~Root/navigation/AppRoute';
 import AskAPI from '~Root/services/ask/apis';
-import HeaderNormalBlueNew from '~Root/components/HeaderNormalBlueNew';
 import { IGlobalState } from '~Root/types';
 import { IRandomDataFeed } from '~Root/services/feed/types';
 import { MainNavigatorParamsList } from '~Root/navigation/config';
@@ -36,12 +23,13 @@ import ModalDialogReport from '~Root/components/ModalDialogReport';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Toast from 'react-native-toast-message';
-import UserAvatar from '~Root/components/UserAvatar';
-import { askLocation } from '~Root/services/ask/actions';
-import moment from 'moment';
 import styles from './styles';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Flurry from 'react-native-flurry-sdk';
+import ShareIcon from './icon/share';
+import AirFeedItem from '~Root/components/ListItem/airFeedItem';
+import { NextIcon, PrevIcon } from './icon/nav';
+import ModalDialogFilter from '~Root/components/ModalDialogFilter';
 
 type Props = NativeStackScreenProps<MainNavigatorParamsList, AppRoute.AIR_FEED>;
 
@@ -52,11 +40,13 @@ const AIRFeedScreen: React.FC<Props> = ({ navigation }) => {
   const userState = useSelector((state: IGlobalState) => state.userState);
   const [loading, setLoading] = useState(false);
   const [indexQuestion, setIndexQuestion] = useState(0);
-  const [filter,setFilter] = useState(false)
+  const [filter, setFilter] = useState('');
+  const [from, setFrom] = useState('');
   const [visibleModal, setVisibleModal] = useState({
     modalRefer: false,
     modalMessage: false,
   });
+  const [showFilter, setShowFilter] = useState(false);
   const [visibleReport, setVisibleReport] = useState(false);
 
   const dataAsk = useMemo(() => {
@@ -64,13 +54,24 @@ const AIRFeedScreen: React.FC<Props> = ({ navigation }) => {
   }, [feedState?.randomDataFeed, indexQuestion]);
 
   useEffect(() => {
+    setShowFilter(false);
     setLoading(true);
     dispatch(
-      getFeed({filter: filter},() => {
+      getFeed({ filter, from }, () => {
         setLoading(false);
       }),
     );
-  }, [filter]);
+  }, []);
+
+  const onApplyFilter = () => {
+    setShowFilter(false);
+    setLoading(true);
+    dispatch(
+      getFeed({ filter, from }, () => {
+        setLoading(false);
+      }),
+    );
+  };
 
   if (loading) {
     return <LoadingSecondary />;
@@ -225,9 +226,7 @@ const AIRFeedScreen: React.FC<Props> = ({ navigation }) => {
     e.stopPropagation();
   };
 
-  const headHeight = Dimensions.get('window').height / 2 + 75;
-  const headerBlueHeight = Dimensions.get('window').height / 2 - 75;
-  const headerBlueHeightNew = Dimensions.get('window').height / 2 + 75;
+  const headerBlueHeightNew = Dimensions.get('window').height / 2;
 
   if (!dataAsk) {
     <View style={GlobalStyles.containerWhite}>
@@ -237,154 +236,92 @@ const AIRFeedScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <>
-      <View style={GlobalStyles.containerWhite}>
-        <TouchableOpacity onPress={() => onProfile(dataAsk)}>
-          <View>
-            <HeaderNormalBlueNew
-              isBackButton={false}
-              containerHeaderStyle={{ ...GlobalStyles.ph15, height: headerBlueHeightNew }}>
-              <View style={[GlobalStyles.container]}>
-                {!dataAsk && (
-                  <Paragraph
-                    textCenter
-                    h4
-                    bold
-                    textWhite
-                    title={t('no_ask')}
-                    style={[GlobalStyles.justifyCenter, GlobalStyles.alignCenter]}
-                  />
-                )}
+      <View style={GlobalStyles.containerGray}>
+        <View style={styles.filterRow}>
+          <View style={styles.filterGroup}>
+            <Paragraph title={t('Filter by: ')} style={styles.filterText} />
+            <TouchableOpacity onPress={() => setShowFilter(true)} style={[styles.reportButton]}>
+              <Paragraph bold600 title={t('+ Filter')} style={styles.textBtnFilter} />
+              {(filter !== '' || from !== '') && <View style={styles.filterPoint} />}
+            </TouchableOpacity>
+          </View>
+          <View style={styles.reportGroup}>
+            {dataAsk && (
+              <TouchableOpacity onPress={() => setVisibleReport(true)}>
+                <Icon name='flag' color={BASE_COLORS.blackColor} size={adjust(20)} style={GlobalStyles.mr5} />
+              </TouchableOpacity>
+            )}
+          </View>
+        </View>
+        <View>
+          <View style={{ height: headerBlueHeightNew }}>
+            <View style={styles.backgroundHeaderWhite} />
+            <View style={[GlobalStyles.container]}>
+              {!dataAsk && (
+                <Paragraph
+                  textCenter
+                  h4
+                  bold
+                  textWhite
+                  title={t('no_ask')}
+                  style={[GlobalStyles.justifyCenter, GlobalStyles.alignCenter]}
+                />
+              )}
+              <TouchableOpacity onPress={() => onProfile(dataAsk)}>
                 <View style={[GlobalStyles.flexRow, GlobalStyles.mb5, GlobalStyles.alignCenter]}>
                   {dataAsk && (
-                    <TouchableOpacity onPress={onPrev} style={GlobalStyles.mr15}>
-                      <Icon
-                        name='angle-left'
-                        size={adjust(30)}
-                        color={indexQuestion === 0 ? 'transparent' : BASE_COLORS.whiteColor}
-                      />
+                    <TouchableOpacity onPress={onPrev} style={styles.prevSide}>
+                      <View style={styles.prevSideTop} />
+                      <View style={styles.prevIcon}>{indexQuestion !== 0 && <PrevIcon />}</View>
                     </TouchableOpacity>
                   )}
                   {dataAsk && (
-                    <TouchableOpacity style={[GlobalStyles.avatarContainer, GlobalStyles.mr20]}>
-                      <View style={styles.imageProfileContainer}>
-                        <UserAvatar user={dataAsk?.user} size={80} />
+                    <AirFeedItem
+                      showDate={true}
+                      item={dataAsk}
+                      onPress={() => onProfile(dataAsk)}
+                      tagStyle={GlobalStyles.askTagStyle}
+                      limitLine={true}
+                    />
+                  )}
+                  {dataAsk && (
+                    <TouchableOpacity onPress={onNext} style={styles.nextSide}>
+                      <View style={styles.nextSideTop} />
+                      <View style={styles.nextIcon}>
+                        {indexQuestion + 1 !== feedState?.randomDataFeed.length && <NextIcon />}
                       </View>
-                    </TouchableOpacity>
-                  )}
-                  {dataAsk && (
-                    <View style={[GlobalStyles.flexColumn, GlobalStyles.container]}>
-                      <Paragraph
-                        h4
-                        bold
-                        textWhite
-                        title={`${dataAsk?.user?.firstName ?? ''} ${dataAsk?.user?.lastName ?? ''}`}
-                        style={GlobalStyles.mb5}
-                      />
-                      <Paragraph h5 textWhite title={dataAsk?.user?.title} style={GlobalStyles.mb5} />
-                    </View>
-                  )}
-                  {dataAsk && (
-                    <TouchableOpacity onPress={onNext} style={GlobalStyles.ml15}>
-                      <Icon
-                        name='angle-right'
-                        size={adjust(30)}
-                        color={
-                          indexQuestion + 1 === feedState?.randomDataFeed.length
-                            ? 'transparent'
-                            : BASE_COLORS.whiteColor
-                        }
-                      />
                     </TouchableOpacity>
                   )}
                 </View>
-                {dataAsk && (
-                  <View style={[GlobalStyles.flexRow, GlobalStyles.ph23, GlobalStyles.mt10]}>
-                    <View style={styles.contentContainer}>
-                      <View style={[styles.tagStyleContainer, GlobalStyles.mb5]}>
-                        <Paragraph
-                          bold600
-                          p
-                          title={dataAsk?.askType?.name}
-                          style={[styles.tagStyle, GlobalStyles.textUppercase]}
-                        />
-                      </View>
-                      <ScrollView
-                        onScroll={onScrollContent}
-                        style={{maxHeight: Dimensions.get('window').height / 4.2 - 25}}>
-                        <View onStartShouldSetResponder={() => true} style={[GlobalStyles.mb5]}>
-                          <Text style={[GlobalStyles.mb5, GlobalStyles.flexRow]}>
-                            <Paragraph textWhite style={styles.textBold} title={`${dataAsk?.content?.target ?? ''}`} />
-                            <Paragraph
-                              textWhite
-                              style={styles.textNormal}
-                              title={` ${dataAsk?.content?.detail ?? ''}`}
-                            />
-                          </Text>
-                          <Text style={GlobalStyles.flexRow}>
-                            <Text style={styles.textNormal}>{'For '}</Text>
-                            <Text style={styles.textNormal}>{dataAsk?.content?.info}</Text>
-                          </Text>
-                        </View>
-                      </ScrollView>
-                      <View style={[GlobalStyles.flexRow]}>
-                        <View style={[GlobalStyles.mr5, styles.locationContainer]}>
-                          <Icon
-                            name='map-marker-alt'
-                            color={BASE_COLORS.blackColor}
-                            size={adjust(12)}
-                            style={GlobalStyles.mr10}
-                          />
-                          <Paragraph
-                            title={askLocation(dataAsk)}
-                            textWhite
-                            style={styles.textNormal}
-                            numberOfLines={1}
-                          />
-                        </View>
-                        {dataAsk.endDate && !dataAsk.noEndDate && (
-                          <View style={styles.dateContainer}>
-                            <Icon
-                              name='calendar'
-                              color={BASE_COLORS.blackColor}
-                              size={adjust(12)}
-                              style={GlobalStyles.mr10}
-                            />
-                            <Paragraph
-                              textWhite
-                              style={styles.textNormal}
-                              title={`${moment(dataAsk.endDate).format('MMM DD YYYY')}`}
-                            />
-                          </View>
-                        )}
-                      </View>
-                    </View>
-                  </View>
-                )}
-                {dataAsk && (
-                  <TouchableOpacity
-                    onPress={() => setVisibleReport(true)}
-                    style={[GlobalStyles.flexRow, styles.reportContainer]}>
-                    <Icon name='flag' color={BASE_COLORS.whiteColor} size={adjust(10)} style={GlobalStyles.mr5} />
-                    <Paragraph textWhite bold600 title={t('report')} style={styles.textReport} />
-                  </TouchableOpacity>
-                )}
-                <View style={styles.btnGroup}>
-                  <TouchableOpacity onPress={onIntroduceAction} style={[GlobalStyles.mr20, styles.btnCircle]}>
-                    <Paragraph title={t('introduce').toUpperCase()} style={styles.btnText} />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={onShare} style={styles.btnCircle}>
-                    <Paragraph title={t('share').toUpperCase()} style={styles.btnText} />
-                  </TouchableOpacity>
-                </View>
+              </TouchableOpacity>
+              <View style={styles.btnGroup}>
+                <TouchableOpacity onPress={onIntroduceAction} style={[GlobalStyles.mr20, styles.btnIntroduce]}>
+                  <Paragraph title={t('Introduce')} style={styles.btnText} />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={onShare} style={styles.btnCircle}>
+                  <ShareIcon />
+                </TouchableOpacity>
               </View>
-            </HeaderNormalBlueNew>
+            </View>
           </View>
-        </TouchableOpacity>
-        <View style={[GlobalStyles.container, { marginTop: 60 }]}>
+        </View>
+        <View style={[GlobalStyles.container]}>
           <SafeAreaView style={[GlobalStyles.container]} edges={['right', 'left']}>
             <FeedBlockItems data={feedState.networks} onProfile={onSelect} onCustomIntroduce={onCustomIntroduce} />
           </SafeAreaView>
         </View>
+        {showFilter && (
+          <ModalDialogFilter
+            filter={filter}
+            setFilter={setFilter}
+            from={from}
+            setFrom={setFrom}
+            visibleModal={showFilter}
+            isDefault={false}
+            onVisibleModal={() => setShowFilter(false)}
+            onApplyFilter={onApplyFilter}
+          />
+        )}
         {visibleModal?.modalMessage && (
           <ModalDialogMessage
             visibleModal={visibleModal?.modalMessage}

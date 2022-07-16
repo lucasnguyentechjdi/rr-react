@@ -33,7 +33,10 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   buttonContainerStyle: {
-    backgroundColor: BASE_COLORS.spanishGrayColor,
+    backgroundColor: 'transparent',
+    borderColor: BASE_COLORS.oxleyColor,
+    color: BASE_COLORS.oxleyColor,
+    borderWidth: 1,
     borderRadius: 24,
     paddingVertical: adjust(8),
     paddingHorizontal: adjust(25),
@@ -45,6 +48,8 @@ export default StyleSheet.create({
   },
   buttonPrimaryContainerStyle: {
     backgroundColor: BASE_COLORS.oxleyColor,
+    borderColor: BASE_COLORS.oxleyColor,
+    borderWidth: 1,
     borderRadius: 24,
     paddingVertical: adjust(8),
     paddingHorizontal: adjust(25),
@@ -67,6 +72,12 @@ export default StyleSheet.create({
     fontFamily: BASE_FONTS.semiBold,
     fontWeight: '600',
     color: BASE_COLORS.whiteColor,
+  },
+  h5BoldDefaultGreen: {
+    ...GlobalStyles.h5,
+    fontFamily: BASE_FONTS.semiBold,
+    fontWeight: '600',
+    color: BASE_COLORS.oxleyColor,
   },
   inputStyle: {
     ...GlobalStyles.pv15,

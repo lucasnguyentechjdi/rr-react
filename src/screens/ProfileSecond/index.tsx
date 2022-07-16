@@ -1,5 +1,6 @@
 import { BASE_COLORS, GlobalStyles } from '~Root/config';
-import { Button, HomeTemplateScreen, Icon, ModalDialogMessage, ModalDialogRefer, Paragraph } from '~Root/components';
+import { Button, Icon, ModalDialogMessage, ModalDialogRefer, Paragraph } from '~Root/components';
+import HomeTemplateScreen from '~Root/components/HomeTemplate/airFeedTemplate';
 import React, { useCallback, useState } from 'react';
 import { ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
 import { adjust, buildShareLink } from '~Root/utils';
@@ -24,6 +25,8 @@ import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import analytics from '@react-native-firebase/analytics';
 import Flurry from 'react-native-flurry-sdk';
+import Location from '../HomeDetail/icon/Location';
+import Calendar from '../HomeDetail/icon/Calendar';
 
 type Props = NativeStackScreenProps<RootNavigatorParamsList, AppRoute.PROFILE>;
 
@@ -183,113 +186,66 @@ const ProfileSecondScreen = ({ navigation, route }: Props) => {
       containerHeaderStyle={GlobalStyles.containerHeaderStyle}
       isBackButton={true}
       profile={infoAsk?.user}
+      ask={infoAsk}
       showLogout={false}>
-      <ScrollView style={GlobalStyles.container}>
+      <ScrollView style={[GlobalStyles.container, styles.contentBackground]}>
         <View style={[GlobalStyles.flexColumn, GlobalStyles.container, GlobalStyles.p15]}>
           <View style={[GlobalStyles.container, GlobalStyles.flexColumn]}>
             {infoAsk && (
-              <Paragraph
-                h5
-                bold
-                textEerieBlackColor
-                title={`${infoAsk?.user?.firstName ?? ''}'s Ask`}
-                style={GlobalStyles.mb5}
-              />
-            )}
-            <View style={[GlobalStyles.tagStyleContainer, GlobalStyles.mb15, styles.tagStyleContainer]}>
-              <Paragraph
-                p
-                textCenter
-                title={infoAsk?.askType?.name ?? ''}
-                style={[GlobalStyles.tagStyle, GlobalStyles.textUppercase, styles.tagStyle]}
-              />
-            </View>
-            <Text style={GlobalStyles.mb10}>
-              <Paragraph
-                h5
-                bold
-                textEerieBlackColor
-                title={`${infoAsk?.content?.target ?? ''}`}
-                style={[GlobalStyles.mb15, styles.text]}
-              />
-              <Paragraph
-                h5
-                textEerieBlackColor
-                title={` ${infoAsk?.content?.detail ?? ''}`}
-                style={[GlobalStyles.mb15, styles.text]}
-              />
-            </Text>
-            <View style={[GlobalStyles.borderBottom, GlobalStyles.mb15, styles.borderBottom, styles.underlineCenter]}>
-              <View style={styles.textUnderlineArea}>
-                <Paragraph h5 textEerieBlackColor title={'FOR:'} />
-              </View>
-            </View>
-            <Paragraph
-              h5
-              textEerieBlackColor
-              title={infoAsk?.content?.info ?? ''}
-              style={[GlobalStyles.mb15, GlobalStyles.pb10, GlobalStyles.borderBottom, styles.borderBottom, styles.text]}
-            />
-            <View
-              style={[
-                GlobalStyles.flexRow,
-                GlobalStyles.mb15,
-                GlobalStyles.pb10,
-                GlobalStyles.borderBottom,
-                styles.borderBottom,
-              ]}>
-              <View style={[GlobalStyles.mr5, styles.locationContainer]}>
-                <Icon
-                  name='map-marker-alt'
-                  color={BASE_COLORS.blackColor}
-                  size={adjust(12)}
-                  style={GlobalStyles.mr10}
-                />
-                <Paragraph
-                  textEerieBlackColor
-                  title={askLocation(infoAsk)}
-                  numberOfLines={1}
-                  ellipsizeMode='tail'
-                  style={styles.title}
-                />
-              </View>
-              {infoAsk?.endDate && !infoAsk?.noEndDate && (
-                <View style={styles.dateContainer}>
-                  <Icon name='calendar' color={BASE_COLORS.blackColor} size={adjust(12)} style={GlobalStyles.mr10} />
-                  <Paragraph textEerieBlackColor title={`${moment(infoAsk?.endDate ?? '').format('MMM DD YYYY')}`} />
+              <View style={styles.askDetailContent}>
+                <View style={[GlobalStyles.mb15, GlobalStyles.fullWidth, GlobalStyles.p10]}>
+                  <View style={[GlobalStyles.flexRow, GlobalStyles.mb10]}>
+                    <Text>
+                      <Paragraph p textWhite title={'For '} style={styles.textNotoSans} />
+                      <Paragraph p textWhite title={infoAsk?.content?.info} style={styles.textNotoSans} />
+                    </Text>
+                  </View>
+                  <View style={[GlobalStyles.flexRow, GlobalStyles.mb10]}>
+                    <View style={[GlobalStyles.mr5, styles.locationContainer]}>
+                      <Text style={GlobalStyles.mr5}>
+                        <Location />
+                      </Text>
+                      <Paragraph textWhite title={askLocation(infoAsk)} style={styles.locationText} numberOfLines={1} />
+                    </View>
+                    {infoAsk.endDate && !infoAsk.noEndDate && (
+                      <View style={styles.dateContainer}>
+                        <Text style={GlobalStyles.mr5}>
+                          <Calendar />
+                        </Text>
+                        <Paragraph
+                          textWhite
+                          title={`${moment(infoAsk.endDate).format('MMM DD YYYY')}`}
+                          style={styles.textNotoSans}
+                        />
+                      </View>
+                    )}
+                  </View>
+                  <Paragraph p textWhite title={infoAsk?.additionalInformation ?? ''} style={styles.textNotoSans} />
                 </View>
-              )}
-            </View>
-            {!!infoAsk?.additionalInformation && (
-              <Paragraph
-                h5
-                textEerieBlackColor
-                title={infoAsk?.additionalInformation}
-                style={[GlobalStyles.mb15, styles.text]}
-              />
+              </View>
             )}
             {infoAsk?.userCode !== userInfo.code && isLoggedIn && (
               <TouchableOpacity
                 onPress={() => setVisibleReport(true)}
                 style={[GlobalStyles.flexRow, styles.reportContainer]}>
-                <Icon name='flag' color={BASE_COLORS.eerieBlackColor} size={adjust(10)} style={GlobalStyles.mr5} />
+                <Icon name='flag' color={BASE_COLORS.whiteColor} size={adjust(10)} style={GlobalStyles.mr5} />
                 <Paragraph textEerieBlackColor bold600 title={t('report')} style={styles.textReport} />
               </TouchableOpacity>
             )}
           </View>
           <View style={[GlobalStyles.mt10]}>
+            <Button
+              isIconLeft={true}
+              title={t('Respond')}
+              bordered
+              h3
+              textCenter
+              onPress={onCreateChat}
+              containerStyle={styles.buttonContainerHalfStyle}
+              textStyle={styles.h5BoldDefault}>
+              <Icon name='comment-alt' color={BASE_COLORS.whiteColor} size={adjust(12)} style={GlobalStyles.mr10} />
+            </Button>
             <View style={[GlobalStyles.flexRow, styles.buttonGroupMain]}>
-              <Button
-                isIconLeft={true}
-                title={t('chat')}
-                bordered
-                h3
-                textCenter
-                onPress={onCreateChat}
-                containerStyle={styles.buttonContainerHalfStyle}
-                textStyle={styles.h5BoldDefault}>
-                <Icon name='comment-alt' color={BASE_COLORS.blackColor} size={adjust(12)} style={GlobalStyles.mr10} />
-              </Button>
               <Button
                 isIconLeft={true}
                 title={t('share')}
@@ -301,23 +257,23 @@ const ProfileSecondScreen = ({ navigation, route }: Props) => {
                 textStyle={styles.h5BoldDefault}>
                 <Icon
                   name='external-link-alt'
-                  color={BASE_COLORS.blackColor}
+                  color={BASE_COLORS.whiteColor}
                   size={adjust(12)}
                   style={GlobalStyles.mr10}
                 />
               </Button>
+              <Button
+                isIconLeft={true}
+                title={t('copy_link')}
+                bordered
+                h3
+                textCenter
+                onPress={copyToClipboard}
+                containerStyle={styles.buttonContainerHalfStyle}
+                textStyle={styles.h5BoldDefault}>
+                <Icon name='copy' color={BASE_COLORS.whiteColor} size={adjust(12)} style={GlobalStyles.mr10} />
+              </Button>
             </View>
-            <Button
-              isIconLeft={true}
-              title={t('copy_link')}
-              bordered
-              h3
-              textCenter
-              onPress={copyToClipboard}
-              containerStyle={styles.buttonContainerStyle}
-              textStyle={styles.h5BoldDefault}>
-              <Icon name='copy' color={BASE_COLORS.blackColor} size={adjust(12)} style={GlobalStyles.mr10} />
-            </Button>
             <Button
               bordered
               title={t('custom_introduction')}

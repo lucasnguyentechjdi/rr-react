@@ -20,6 +20,7 @@ export default StyleSheet.create({
   },
   circleActive: {
     ...GlobalStyles.mb5,
+    marginLeft: 5,
     width: adjust(12),
     height: adjust(12),
     borderRadius: adjust(24),
@@ -27,9 +28,10 @@ export default StyleSheet.create({
   },
   circle: {
     ...GlobalStyles.mb5,
+    marginLeft: 5,
     width: adjust(12),
     height: adjust(12),
     borderRadius: adjust(24),
-    backgroundColor: BASE_COLORS.gray90Color,
+    backgroundColor: BASE_COLORS.whiteColor,
   },
 });

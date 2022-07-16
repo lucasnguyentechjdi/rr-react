@@ -1,9 +1,9 @@
 import * as API from '~Root/private/api';
 
-import {IActionCreateChatExternal, IActionCreateChatInternal, IActionGetFeedRequest} from './types';
+import { IActionCreateChatExternal, IActionCreateChatInternal, IActionGetFeedRequest } from './types';
 
 import axios from '~Root/services/axios';
-import {handleResponse} from '../axios/handle';
+import { handleResponse } from '../axios/handle';
 import i18n from 'i18next';
 
 /* eslint-disable @typescript-eslint/no-extraneous-class */
@@ -77,9 +77,17 @@ export default class FeedAPI {
 
   static async getAskInNetWork(data: IActionGetFeedRequest['payload']) {
     try {
+      let url = API.GET_ASK_IN_NETWORK(1, 50);
+      if (data.filter !== '') {
+        url += `&filter=${data.filter}`;
+      }
+      if (data.from !== '') {
+        url += `&filter=${data.from}`;
+      }
+      console.log(url);
       const response: any = await axios({
         method: 'get',
-        url: data.filter===true? API.GET_ASK_IN_NETWORK(1, 50, "true") : API.GET_ASK_IN_NETWORK(1, 50),
+        url,
         headers: {
           'Content-Type': 'application/json',
           Accept: 'application/json',

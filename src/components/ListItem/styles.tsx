@@ -1,14 +1,32 @@
 import { BASE_COLORS, BASE_FONTS, GlobalStyles } from '~Root/config';
 
-import { StyleSheet } from 'react-native';
+import { Dimensions, StyleSheet } from 'react-native';
 import { adjust } from '~Root/utils';
-
+const { width } = Dimensions.get('window');
 export default StyleSheet.create({
   contain: {
     flexDirection: 'column',
     justifyContent: 'center',
     width: '100%',
     backgroundColor: BASE_COLORS.whiteColor,
+  },
+  askContain: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    width: width - 80,
+    height: '98%',
+    overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+    backgroundColor: BASE_COLORS.steelBlue,
+    borderRadius: 8,
+    borderBottomRightRadius: 30,
   },
   contentContainer: {
     ...GlobalStyles.mt20,
@@ -24,13 +42,31 @@ export default StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: BASE_COLORS.brightGray,
   },
+  askAirFeedBlock: {
+    borderRadius: 8,
+    padding: 0,
+    overflow: 'hidden',
+  },
+  askTitleBlock: {
+    backgroundColor: '#E5EFF7',
+    width: '100%',
+    overflow: 'hidden',
+    padding: 20,
+    paddingTop: 10,
+    paddingBottom: 0,
+  },
   detailContent: {
     ...GlobalStyles.p10,
     width: '100%',
     backgroundColor: BASE_COLORS.steelBlue,
   },
-  titleContent: {
+  askDetailContent: {
+    ...GlobalStyles.p10,
+    width: '100%',
+    height: '60%',
+    backgroundColor: BASE_COLORS.steelBlue,
   },
+  titleContent: {},
   timeTag: {
     backgroundColor: BASE_COLORS.whiteColor,
     ...GlobalStyles.ph20,
@@ -65,5 +101,35 @@ export default StyleSheet.create({
   textNotoSans: {
     fontFamily: BASE_FONTS.notoSanRegular,
     lineHeight: adjust(19),
+  },
+  profileContainer: {
+    ...GlobalStyles.flexRow,
+  },
+  imageProfileContainer: {
+    ...GlobalStyles.mr10,
+    width: adjust(50),
+    height: adjust(50),
+    borderRadius: adjust(100),
+    overflow: 'hidden',
+  },
+  boldTitle: {
+    color: BASE_COLORS.lightBlackColor,
+    lineHeight: 21,
+  },
+  boldLightTitle: {
+    color: BASE_COLORS.grayX11Color,
+    lineHeight: 21,
+  },
+  title: {
+    color: BASE_COLORS.lightBlackColor,
+    lineHeight: 21,
+    fontWeight: '400',
+    flexWrap: 'wrap',
+  },
+  groupText: {
+    ...GlobalStyles.pt5,
+    ...GlobalStyles.container,
+    ...GlobalStyles.mr10,
+    alignSelf: 'flex-start',
   },
 });
