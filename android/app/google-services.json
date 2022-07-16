@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "198350152401",
+    "project_id": "referreach-eb11e",
+    "storage_bucket": "referreach-eb11e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198350152401:android:ed1548f00be74065e65bf0",
+        "android_client_info": {
+          "package_name": "com.referreach.mobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198350152401-3ad9sj372pod294bi3ue0vdnajsqhq52.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsWjJXKUYi8mW6TJJbVVgfLeLlI0AFvIs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198350152401-3ad9sj372pod294bi3ue0vdnajsqhq52.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "198350152401-rfhpggcv4fivuf50ja5o6pddcktkedb6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.referreach.mobile"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

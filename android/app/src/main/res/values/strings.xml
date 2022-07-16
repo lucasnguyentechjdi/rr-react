@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Refer Reach MVP</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">h9ebnCJDaB8bHSJnsxIGchDIht7NpnZoUNYa1</string>
+</resources>
