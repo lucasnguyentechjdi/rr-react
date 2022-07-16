@@ -41,7 +41,8 @@ export interface IRandomDataFeed extends IAsk {
 export interface IActionGetFeedRequest {
   type: typeof GET_FEED_REQUESTED;
   payload: {
-    filter: boolean;
+    filter: string;
+    from: string;
   };
   callback: () => void;
 }

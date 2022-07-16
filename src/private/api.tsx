@@ -47,9 +47,9 @@ export const ASK_DATA_URL = (page: number, limit: number, userCode?: string) =>
     : `${ROOT_API_URL}/v1/ask?page=${page}&limit=${limit}`;
 export const CREATE_SINGLE_ASK_URL = `${ROOT_API_URL}/v1/ask`;
 export const GET_ASK_IN_NETWORK = (page: number, limit: number, filter?: string) =>
-  filter ?
-    `${ROOT_API_URL}/v1/ask/network?page=${page}&limit=${limit}&filter=${filter}` :
-    `${ROOT_API_URL}/v1/ask/network?page=${page}&limit=${limit}`;
+  filter
+    ? `${ROOT_API_URL}/v1/ask/network?page=${page}&limit=${limit}&filter=${filter}`
+    : `${ROOT_API_URL}/v1/ask/network?page=${page}&limit=${limit}`;
 export const GET_SINGLE_ASK_URL = (code: string) => `${ROOT_API_URL}/v1/ask/${code}`;
 export const GET_INFO_ASK_BY_SECRET_URL = (code: string) => `${ROOT_API_URL}/v1/ask/secret/${code}`;
 export const ASK_TEMPLATE_URL = `${ROOT_API_URL}/v1/ask-type`;

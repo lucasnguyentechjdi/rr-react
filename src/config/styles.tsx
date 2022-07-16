@@ -79,6 +79,9 @@ export const GlobalStyles = StyleSheet.create({
   headerNew: {
     height: (Dimensions.get('window').height / 100) * 25, //old num: 30
   },
+  headerNewWithContent: {
+    height: (Dimensions.get('window').height / 100) * 25 + 30, //old num: 30
+  },
   containerHeader: {
     // flex: PixelRatio.get() < 2 ? (Platform.OS === 'ios' ? 1 : 0.4) : -1,
     borderBottomRightRadius: PixelRatio.roundToNearestPixel(80),
@@ -113,6 +116,11 @@ export const GlobalStyles = StyleSheet.create({
     // height: PixelRatio.roundToNearestPixel(HEADER.Header.MD),
     backgroundColor: BASE_COLORS.steelBlue,
   },
+  containerHeaderLightBlue: {
+    height: HEADER.Header.MD + 30,
+    // height: PixelRatio.roundToNearestPixel(HEADER.Header.MD),
+    backgroundColor: BASE_COLORS.lightBlue,
+  },
   containerHeaderBlueNew: {
     backgroundColor: BASE_COLORS.steelBlue,
   },
@@ -128,6 +136,10 @@ export const GlobalStyles = StyleSheet.create({
   containerWhite: {
     flex: 1,
     backgroundColor: BASE_COLORS.whiteColor,
+  },
+  containerGray: {
+    flex: 1,
+    backgroundColor: BASE_COLORS.gray90Color,
   },
   safeAreaView: {
     flex: 1,
@@ -150,6 +162,12 @@ export const GlobalStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     display: 'flex',
+  },
+  headerJustifyBetween: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
   },
   justifyBetween: {
     justifyContent: 'space-between',
@@ -304,6 +322,13 @@ export const GlobalStyles = StyleSheet.create({
   },
   headerTextWhite: {
     color: BASE_COLORS.whiteColor,
+    fontFamily: BASE_FONTS.semiBold,
+    fontWeight: '600',
+    textAlign: 'center',
+    flex: 1,
+  },
+  headerTextBlack: {
+    color: BASE_COLORS.blackColor,
     fontFamily: BASE_FONTS.semiBold,
     fontWeight: '600',
     textAlign: 'center',

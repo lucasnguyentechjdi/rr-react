@@ -22,6 +22,7 @@ import styles from './styles';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
 import Swiper from 'react-native-swiper';
+import CustomIcon from './customIcon';
 
 interface Props {
   data: INetwork[];
@@ -29,7 +30,7 @@ interface Props {
   onCustomIntroduce: () => void;
 }
 
-const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => { }, onCustomIntroduce = () => { } }: Props) => {
+const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => {}, onCustomIntroduce = () => {} }: Props) => {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [items, setItems] = useState<Element[]>([]);
@@ -39,13 +40,34 @@ const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => { }, onCustom
   const headHeight = Dimensions.get('window').height / 2 - 100;
 
   const stylesNew = StyleSheet.create({
+    bottomSwiper: {
+      ...GlobalStyles.flexRow,
+      paddingLeft: 20,
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
+      overflow: 'hidden',
+    },
+    customBackground: {
+      position: 'absolute',
+      right: 0,
+      top: 0,
+    },
     wrapper: {},
     slide1: {
       height: headHeight,
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
+      paddingTop: 30,
     },
     slide2: {
+      backgroundColor: BASE_COLORS.whiteColor,
+      borderTopLeftRadius: 8,
+      borderTopRightRadius: 8,
       height: headHeight,
       padding: 10,
+      paddingLeft: 25,
+      paddingRight: 25,
+      paddingTop: 30,
     },
     slide3: {
       height: headHeight,
@@ -86,6 +108,7 @@ const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => { }, onCustom
           myself={{
             biztype: item?.user?.title ?? '',
             self_intro: item?.user?.introduction ?? '',
+            industry: item?.user?.sellToIndustries ?? [],
           }}
           profile_photo={item?.user?.avatar ? imageUrl(item?.user?.avatar) : null}
           status={1}
@@ -95,11 +118,16 @@ const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => { }, onCustom
     });
     items.push(
       <View key={'custom'} style={stylesNew.slide2}>
-        <View style={[GlobalStyles.flexRow, GlobalStyles.mb30]}>
-          <TouchableOpacity style={styles.iconContainer}>
-            <Icon name='question' size={adjust(25)} color={BASE_COLORS.whiteColor} />
-          </TouchableOpacity>
-          <Paragraph bold600 title={t('know_someone').toUpperCase()} style={GlobalStyles.mt10} />
+        <View style={stylesNew.customBackground}>
+          <CustomIcon />
+        </View>
+        <View style={[GlobalStyles.mb20]}>
+          <Paragraph bold600 title={t('Have someone')} />
+          <Paragraph bold600 title={t('else in mind?')} />
+          <Paragraph
+            title={t('Make a custom introduction to someone else from your Trust Network.')}
+            style={GlobalStyles.mt10}
+          />
         </View>
         <Button
           bordered
@@ -140,7 +168,7 @@ const FeedBlockItems: React.FC<Props> = ({ data, onProfile = () => { }, onCustom
   }, [data]);
 
   return (
-    <View style={GlobalStyles.flexRow}>
+    <View style={stylesNew.bottomSwiper}>
       <Swiper
         ref={flatListRef}
         loop={false}

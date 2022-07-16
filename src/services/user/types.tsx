@@ -123,7 +123,7 @@ export interface IMyClient {
   industry: IIndustry[];
 }
 export interface IMySelf {
-  industry?: IIndustry[];
+  industry?: string[];
   biztype: string;
   self_intro: string;
 }

@@ -1,4 +1,4 @@
-import {BASE_COLORS, GlobalStyles} from '~Root/config';
+import {BASE_COLORS, BASE_FONTS, GlobalStyles} from '~Root/config';
 
 import {StyleSheet} from 'react-native';
 import {adjust} from '~Root/utils';
@@ -23,10 +23,11 @@ export default StyleSheet.create({
   },
   imageProfileContainer: {
     ...GlobalStyles.mr10,
-    width: adjust(65),
-    height: adjust(65),
-    borderRadius: adjust(130),
+    width: adjust(50),
+    height: adjust(50),
+    borderRadius: adjust(100),
     overflow: 'hidden',
+    paddingLeft: 10,
   },
   imageProfile: {
     width: '100%',
@@ -50,6 +51,23 @@ export default StyleSheet.create({
   },
   profileContainer: {
     ...GlobalStyles.flexRow,
-    ...GlobalStyles.mb10,
+  },
+  tag: {
+    ...GlobalStyles.pv5,
+    ...GlobalStyles.ph5,
+    ...GlobalStyles.mt5,
+    ...GlobalStyles.mb5,
+    borderColor: BASE_COLORS.oxleyColor,
+    borderWidth: 1,
+    backgroundColor: 'transparent',
+    borderRadius: adjust(10),
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  tagText: {
+    color: BASE_COLORS.oxleyColor,
+    fontFamily: BASE_FONTS.semiBold,
+    fontWeight: '600',
+    fontSize: adjust(14),
   },
 });

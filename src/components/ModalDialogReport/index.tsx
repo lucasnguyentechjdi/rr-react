@@ -56,7 +56,7 @@ const ModalDialogReport: React.FC<Props> = ({
             textCenter
             onPress={onCancel}
             containerStyle={styles.buttonContainerStyle}
-            textStyle={styles.h5BoldDefault}
+            textStyle={styles.h5BoldDefaultGreen}
           />
           <Button
             title={t('send_report')}

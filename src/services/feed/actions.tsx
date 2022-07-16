@@ -19,11 +19,11 @@ import {
 
 import {IStatus} from '~Root/services/axios/types';
 
-export const getFeed = (payload: IActionGetFeedRequest['payload'],callback:()=>void)=> {
+export const getFeed = (payload: IActionGetFeedRequest['payload'], callback:()=>void)=> {
   return {
     type: GET_FEED_REQUESTED,
     payload,
-    callback
+    callback,
   };
 };
 
