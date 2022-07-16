@@ -1,7 +1,7 @@
 import axios from '~Root/services/axios';
 import * as API from '~Root/private/api';
-import { IResponse, IResult } from '../axios/types';
-import { handleResponse } from '../axios/handle';
+import {IResponse, IResult} from '../axios/types';
+import {handleResponse} from '../axios/handle';
 
 export const removeNetwork = async (userCode: string): Promise<IResult> => {
   try {

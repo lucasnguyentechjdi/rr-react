@@ -1,8 +1,8 @@
 import * as yup from 'yup';
 
-import React, {useCallback, useEffect, useState} from 'react';
-import {Platform, Pressable, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useCallback, useEffect, useState } from 'react';
+import { Platform, Pressable, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
   ButtonSecond,
@@ -12,33 +12,33 @@ import {
   ModalDialogCommon,
   Paragraph,
   ProfileBlock,
-  ProfileTemplateScreen,
+  ProfileTemplateSceen
 } from '~Root/components';
-import {BASE_COLORS, GlobalStyles, PROFILE_FIELDS} from '~Root/config';
+import { BASE_COLORS, GlobalStyles, PROFILE_FIELDS } from '~Root/config';
 import {
   filterIndustry,
   getAllIndustries,
   hideModal,
   setIndustrySelected,
-  showModal,
+  showModal
 } from '~Root/services/industry/actions';
-import {IIndustry, IIndustryState} from '~Root/services/industry/types';
-import {hideLoading, showLoading} from '~Root/services/loading/actions';
-import {onLogout, setUserIndustry, updateUserProfileRequest} from '~Root/services/user/actions';
-import {IAvatar, IUserState} from '~Root/services/user/types';
+import { IIndustry, IIndustryState } from '~Root/services/industry/types';
+import { hideLoading, showLoading } from '~Root/services/loading/actions';
+import { onLogout, setUserIndustry, updateUserProfileRequest } from '~Root/services/user/actions';
+import { IAvatar, IUserState } from '~Root/services/user/types';
 
-import {yupResolver} from '@hookform/resolvers/yup';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {useTranslation} from 'react-i18next';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import Toast from 'react-native-toast-message';
-import {AppRoute} from '~Root/navigation/AppRoute';
-import {RootNavigatorParamsList} from '~Root/navigation/config';
-import {destroyData} from '~Root/services/ask/actions';
-import {logout} from '~Root/services/auth/actions';
-import {socketDestroy} from '~Root/services/socket/context';
-import {uploadImage} from '~Root/services/upload';
-import {IGlobalState} from '~Root/types';
+import { AppRoute } from '~Root/navigation/AppRoute';
+import { RootNavigatorParamsList } from '~Root/navigation/config';
+import { destroyData } from '~Root/services/ask/actions';
+import { logout } from '~Root/services/auth/actions';
+import { socketDestroy } from '~Root/services/socket/context';
+import { uploadImage } from '~Root/services/upload';
+import { IGlobalState } from '~Root/types';
 import Chat from './icon/Chat';
 import EditIcon from './icon/EditIcon';
 import Email from './icon/Email';
@@ -54,15 +54,15 @@ const schema = yup.object().shape({
   introduction: yup.string(),
 });
 
-const ProfileScreen = ({navigation}: Props) => {
-  const {t} = useTranslation();
+const ProfileScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
 
   const {
     register,
     control,
     setValue,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>({
     resolver: yupResolver(schema),
     mode: 'onChange',
@@ -84,16 +84,8 @@ const ProfileScreen = ({navigation}: Props) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [textSearch]);
 
-  const handleChangeSellToBusiness = () => {
-    console.log('handleChangeSellToBusiness', userState?.userInfo?.sellToAllBusiness);
-    const newUserInfo = !userState?.userInfo?.sellToAllBusiness
-      ? {...userState?.userInfo, sellToIndustries: [], sellToAllBusiness: !userState?.userInfo?.sellToAllBusiness}
-      : {...userState?.userInfo, sellToAllBusiness: !userState?.userInfo?.sellToAllBusiness};
-    setUserState({...userState, userInfo: newUserInfo});
-  };
-
   // target = 1 (Your Industry), 2 (You sell to), 3 (yours partners)
-  const handleIndustry = ({title = `${t('your_industry')}`, target = 'yourIndustries'}) => {
+  const handleIndustry = ({ title = `${t('your_industry')}`, target = 'yourIndustries' }) => {
     dispatch(showLoading());
     if (target === 'yourIndustries' && userState.userInfo.yourIndustries) {
       dispatch(setIndustrySelected(userState.userInfo.yourIndustries));
@@ -120,7 +112,7 @@ const ProfileScreen = ({navigation}: Props) => {
       );
     }
     dispatch(hideLoading());
-    dispatch(showModal({title, target}));
+    dispatch(showModal({ title, target }));
   };
 
   const onBack = () => {
@@ -159,37 +151,65 @@ const ProfileScreen = ({navigation}: Props) => {
   };
 
   const onSave = (data: string[]) => {
+    // switch (industryState?.target) {
+    //   case 'yourIndustries':
+    //     dispatch(
+    //       setUserIndustry({
+    //         ...userState?.userInfo,
+    //         yourIndustries: data,
+    //       }),
+    //     );
+    //     break;
+    //   case 'sellToIndustries':
+    //     dispatch(
+    //       setUserIndustry({
+    //         ...userState?.userInfo,
+    //         sellToIndustries: data,
+    //       }),
+    //     );
+    //     break;
+    //   case 'partnerIndustries':
+    //     dispatch(
+    //       setUserIndustry({
+    //         ...userState?.userInfo,
+    //         partnerIndustries: data,
+    //       }),
+    //     );
+    //     break;
+    //   default:
+    //     break;
+    // }
     switch (industryState?.target) {
       case 'yourIndustries': {
         setUserState({
           ...userState,
-          userInfo: {...userState?.userInfo, yourIndustries: data},
-        });
+          userInfo: { ...userState?.userInfo, yourIndustries: data },
+        })
         break;
       }
       case 'sellToIndustries': {
         setUserState({
           ...userState,
-          userInfo: {...userState?.userInfo, sellToIndustries: data},
-        });
+          userInfo: { ...userState?.userInfo, sellToIndustries: data },
+        })
         break;
       }
       case 'partnerIndustries': {
         setUserState({
           ...userState,
-          userInfo: {...userState?.userInfo, partnerIndustries: data},
-        });
+          userInfo: { ...userState?.userInfo, partnerIndustries: data },
+        })
         break;
       }
       default:
         break;
     }
-    dispatch(hideModal({title: '', target: null}));
+    dispatch(hideModal({ title: '', target: null }));
     dispatch(setIndustrySelected(null));
   };
 
   const onHideModal = () => {
-    dispatch(hideModal({title: '', target: null}));
+    dispatch(hideModal({ title: '', target: null }));
   };
 
   const onInputChange = useCallback((text: string) => {
@@ -213,7 +233,7 @@ const ProfileScreen = ({navigation}: Props) => {
   const onDone: SubmitHandler<any> = async (credentials: any) => {
     const dataForm = createFormData(userState?.avatar_temp);
     const item: any = {};
-    const data: any = {...userState?.profile_temp};
+    const data: any = { ...userState?.profile_temp };
     const nameData = credentials.name.split(' ');
     const firstName = nameData.splice(0, 1);
     data.firstName = firstName[0];
@@ -268,15 +288,15 @@ const ProfileScreen = ({navigation}: Props) => {
 
   const onPressPolicy = () => {
     console.log('onPressPolicy');
-    navigation.navigate(AppRoute.PRIVACY, {type: 'profile'});
-  };
+    navigation.navigate(AppRoute.PRIVACY, { type: 'profile' });
+  }
 
   const onCancel = () => {
     if (!userState?.userInfo?.profileCompleted) {
       return false;
     }
     if (showEdit?.profile) {
-      setShowEdit(value => ({...value, profile: false}));
+      setShowEdit(value => ({ ...value, profile: false }));
       setUserState(PrimeUserState);
       return false;
     }
@@ -285,11 +305,11 @@ const ProfileScreen = ({navigation}: Props) => {
   };
 
   const onPress = () => {
-    setShowEdit(value => ({...value, profile: true}));
+    setShowEdit(value => ({ ...value, profile: true }));
     // navigation.navigate(AppRoute.PROFILE_PERSONAL);
   };
 
-  const onDelete = ({index, target}: {index: number; target: string}) => {
+  const onDelete = ({ index, target }: { index: number; target: string }) => {
     // dispatch(deleteUserIndustry({ index, target }));
     let industries: string[] = [];
     switch (target) {
@@ -308,12 +328,12 @@ const ProfileScreen = ({navigation}: Props) => {
     } else {
       dataFilter = industries.filter((_: any, i: number) => index !== i);
     }
-    setUserState({...userState, userInfo: {...userState?.userInfo, [target]: dataFilter}});
+    setUserState({ ...userState, userInfo: { ...userState?.userInfo, [target]: dataFilter } });
   };
 
   const handleModalLogout = () => {
     setModalLogout(!modalLogout);
-  };
+  }
 
   const handleLogout = () => {
     dispatch(logout());
@@ -331,20 +351,19 @@ const ProfileScreen = ({navigation}: Props) => {
 
   return (
     <>
-      <ProfileTemplateScreen onBack={onBack} isBackButton={true} isEdit={showEdit.profile}>
+      <ProfileTemplateSceen onBack={onBack} isBackButton={true}>
         <View style={[GlobalStyles.flexColumn, GlobalStyles.scrollViewWhite]}>
-          {!showEdit.profile && (
+          {!showEdit.profile &&
             <View style={styles.buttonEditContainer}>
               <ButtonSecond
                 title={t('edit_profile')}
-                titleStyle={{...GlobalStyles.mr5}}
+                titleStyle={{ ...GlobalStyles.mr5 }}
                 onPress={onPress}
                 showIcon={false}
                 CustomIcon={EditIcon}
               />
-            </View>
-          )}
-          {!showEdit?.profile ? (
+            </View>}
+          {!showEdit?.profile ?
             <View style={styles.userInfoContainer}>
               <Paragraph
                 h2
@@ -354,7 +373,11 @@ const ProfileScreen = ({navigation}: Props) => {
               />
               <View style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, GlobalStyles.mt5]}>
                 <Email />
-                <Paragraph p title={`${userState?.userInfo?.email}`} style={[GlobalStyles.ml5, styles.email]} />
+                <Paragraph
+                  p
+                  title={`${userState?.userInfo?.email}`}
+                  style={[GlobalStyles.ml5, styles.email]}
+                />
               </View>
               <Paragraph h4 bold title={userState?.userInfo?.title} style={[styles.mainTextColor, GlobalStyles.mt10]} />
               <Paragraph
@@ -363,7 +386,7 @@ const ProfileScreen = ({navigation}: Props) => {
                 style={[styles.defaultTextColor, GlobalStyles.mt15, styles.description]}
               />
             </View>
-          ) : (
+            :
             <View>
               <InputValidateControl
                 styleArea={styles.styleArea}
@@ -398,24 +421,22 @@ const ProfileScreen = ({navigation}: Props) => {
                 multiline={true}
               />
             </View>
-          )}
-          {showEdit?.profile && (
+          }
+          {showEdit?.profile &&
             <View style={GlobalStyles.alignCenter}>
               <Paragraph h4 bold600 textBlack title={t('industry_information')} style={[GlobalStyles.mt30]} />
-            </View>
-          )}
+            </View>}
           <View style={styles.cardContainer}>
             <ProfileBlock
               userInfo={userState?.userInfo}
               onDelete={onDelete}
               edit={showEdit?.profile}
-              handleChangeSellToBusiness={handleChangeSellToBusiness}
               handleIndustry={handleIndustry}
             />
           </View>
           {showEdit?.profile && (
             <View style={[GlobalStyles.flexRow, styles.buttonGroup]}>
-              <View style={{flex: 1}}>
+              <View style={{ flex: 1 }}>
                 <Button
                   title={t('cancel')}
                   bordered
@@ -426,7 +447,7 @@ const ProfileScreen = ({navigation}: Props) => {
                   textStyle={styles.h5BoldDefault}
                 />
               </View>
-              <View style={{flex: 1}}>
+              <View style={{ flex: 1 }}>
                 <Button
                   title={t('done')}
                   bordered
@@ -455,7 +476,7 @@ const ProfileScreen = ({navigation}: Props) => {
             />
           )}
         </View>
-        {!showEdit?.profile && (
+        {!showEdit?.profile &&
           <View style={[GlobalStyles.mb20, styles.informationSection]}>
             <Pressable style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.item]}>
               <Chat />
@@ -465,16 +486,7 @@ const ProfileScreen = ({navigation}: Props) => {
               <Question />
               <Paragraph h4 bold600 textBlack title={t('FAQ')} style={GlobalStyles.ml15} />
             </Pressable>
-            <Pressable
-              style={[
-                GlobalStyles.flexRow,
-                GlobalStyles.alignCenter,
-                styles.item,
-                {borderBottomWidth: 0},
-                GlobalStyles.mb5,
-              ]}
-              onPress={onPressPolicy}
-              android_ripple={{color: '#cdcdcd'}}>
+            <Pressable style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.item, { borderBottomWidth: 0 }, GlobalStyles.mb5]} onPress={onPressPolicy} android_ripple={{ color: '#cdcdcd' }}>
               <Shield />
               <Paragraph h4 bold600 textBlack title={t('privacy_policy')} style={[GlobalStyles.ml15]} />
             </Pressable>
@@ -490,7 +502,7 @@ const ProfileScreen = ({navigation}: Props) => {
               />
             </View>
           </View>
-        )}
+        }
         {modalLogout && (
           <ModalDialogCommon
             isVisible={modalLogout}
@@ -521,7 +533,7 @@ const ProfileScreen = ({navigation}: Props) => {
             </View>
           </ModalDialogCommon>
         )}
-      </ProfileTemplateScreen>
+      </ProfileTemplateSceen>
       <Loading />
     </>
   );

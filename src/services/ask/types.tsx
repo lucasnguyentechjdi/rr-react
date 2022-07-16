@@ -48,7 +48,6 @@ export interface IAsk {
   endAt: string | undefined;
   foundResponder: boolean | undefined;
   secretCode: string;
-  createdAt: string;
 }
 
 export interface IAskFormTemplate {

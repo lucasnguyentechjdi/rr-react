@@ -36,7 +36,7 @@ const GuestHomeTemplateScreen: React.FC<Props> = ({ containerHeaderStyle = {}, p
                   bold600
                   textWhite
                   numberOfLines={2}
-                  title={profile?.firstName + ' ' + profile?.lastName}
+                  title={profile?.title}
                   style={[GlobalStyles.mb10, styles.limitWidth, styles.title, styles.biztype]}
                 />
                 {profile?.title && profile?.title !== '' && (

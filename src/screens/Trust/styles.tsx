@@ -123,6 +123,9 @@ export default StyleSheet.create({
     borderBottomColor: BASE_COLORS.primary,
     alignItems: 'center',
   },
+  askHeaderTrustNetwork: {
+    // justifyContent: 'space-between',
+  },
   mainButtonContainer: {
     position: 'absolute',
     bottom: screenHeight / 9,
@@ -187,7 +190,7 @@ export default StyleSheet.create({
     justifyContent: 'center',
   },
   tooltipMargin: {
-    marginLeft: adjust(10),
-    marginRight: adjust(10),
+    marginLeft: adjust(28),
+    marginRight: adjust(5),
   },
 });

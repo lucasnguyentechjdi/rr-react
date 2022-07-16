@@ -1,9 +1,9 @@
-import {BASE_COLORS, BASE_FONTS, GlobalStyles} from '~Root/config';
-import {Dimensions, StyleSheet} from 'react-native';
+import { BASE_COLORS, BASE_FONTS, GlobalStyles } from '~Root/config';
+import { Dimensions, StyleSheet } from 'react-native';
 
-import {adjust} from '~Root/utils';
+import { adjust } from '~Root/utils';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 export default StyleSheet.create({
   container: {
@@ -58,7 +58,6 @@ export default StyleSheet.create({
     flexDirection: 'row',
     flex: 0.8,
     overflow: 'hidden',
-    alignItems: 'center',
   },
   locationText: {
     fontFamily: BASE_FONTS.notoSanRegular,
@@ -70,7 +69,6 @@ export default StyleSheet.create({
   dateContainer: {
     display: 'flex',
     flexDirection: 'row',
-    alignItems: 'center',
     flex: 0.8,
   },
   buttonGroup: {
@@ -104,7 +102,7 @@ export default StyleSheet.create({
     borderRadius: adjust(24),
     justifyContent: 'center',
     alignItems: 'center',
-    width: '45%',
+    width: '45%'
   },
   h5BoldDefault: {
     ...GlobalStyles.h5,

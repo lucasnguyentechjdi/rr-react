@@ -21,9 +21,11 @@ const ChatMessage = ({item, isSameUser}: Props) => {
   };
 
   return (
-    <View style={[styles[position].container]}>
-      {/* {!isSameUser ? renderAvatar() : null} */}
-      {renderBubble()}
+    <View>
+      <View style={[styles[position].container]}>
+        {/* {!isSameUser ? renderAvatar() : null} */}
+        {renderBubble()}
+      </View>
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import { IAsyncCall, ISetAsyncCall } from '~Root/types';
+import {IAsyncCall, ISetAsyncCall} from '~Root/types';
 
 export const USER_INFO_REQUESTED = 'USER_INFO/REQUESTED';
 export const USER_INFO_SUCCESS = 'USER_INFO/SUCCESS';
@@ -75,5 +75,3 @@ export const CHANGE_SELL_ALL_BUSINESS = 'CHANGE_SELL_ALL_BUSINESS';
 export const LOG_OUT_REQUESTED = 'LOG_OUT/REQUESTED';
 export const LOG_OUT_SUCCESS = 'LOG_OUT/SUCCESS';
 export const LOG_OUT_FAILURE = 'LOG_OUT/FAILURE';
-
-export const REMOVE_SUGGESTION = 'REMOVE_SUGGESTION';

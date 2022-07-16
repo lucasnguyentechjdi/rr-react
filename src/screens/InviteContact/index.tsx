@@ -9,17 +9,15 @@ import {
   Link,
   Loading,
   Paragraph,
-  TabGroup,
-  Tab,
 } from '~Root/components';
 import React, { useEffect, useRef, useState } from 'react';
-import { Share, View, Text } from 'react-native';
+import { Share, View } from 'react-native';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { AppRoute } from '~Root/navigation/AppRoute';
 import { IGlobalState } from '~Root/types';
-import { IInviteFormData, ENetworkInvite } from '~Root/services/invite/types';
+import { IInviteFormData } from '~Root/services/invite/types';
 import { IUserState } from '~Root/services/user/types';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import PhoneInput from 'react-native-phone-number-input';
@@ -32,7 +30,6 @@ import styles from './styles';
 import { useTranslation } from 'react-i18next';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { buildShareInviteLink } from '~Root/utils/link';
-import MassInvite from '../MassInvite';
 
 type Props = NativeStackScreenProps<RootNavigatorParamsList, AppRoute.INVITE_CONTACT>;
 
@@ -168,107 +165,126 @@ const InviteContactScreen = ({ navigation }: Props) => {
     }
   }, []);
 
-  const [tabValue, setTabValue] = React.useState(ENetworkInvite.Individual);
-  const handleOnChangeTab = (ind: number) => {
-    setTabValue(ind ? ENetworkInvite.MassInvite : ENetworkInvite.Individual)
-  }
-
   return (
     <InviteContactTemplateScreen
       title={`${t('invite_into')} ${t('trust_network')}`}
       onBack={onBack}
       isBackButton={true}>
-      <View style={[styles.tabGroup]}>
-        <TabGroup titles={['Individual Invite', 'Mass Invite']} value={tabValue} onChange={handleOnChangeTab}>
-          <Tab tabVal={ENetworkInvite.Individual}>
-            <View style={[GlobalStyles.scrollViewWhite, GlobalStyles.flexColumn]}>
-              <Button
-                title={t('scan_phone')}
-                textCenter
-                bordered
-                onPress={onScan}
-                containerStyle={[styles.buttonCreateInviteContainerStyle, GlobalStyles.mv10]}
-                textStyle={styles.h3BoldDefault}
-              />
-              <View style={[GlobalStyles.mb15, styles.line]} />
-              {!inviteComplete && (
-                <>
-                  <InputValidateControl
-                    inputStyle={styles.inputStyle}
-                    labelStyle={styles.labelStyle}
-                    autoFocus={false}
-                    selectionColor={BASE_COLORS.steelBlueColor}
-                    placeholder={t('name')}
-                    placeholderTextColor={BASE_COLORS.steelBlueColor}
-                    errors={errors}
-                    control={control}
-                    name={INVITE_CONTACT_FIELDS.name}
-                    rules={ruleName}
-                    register={register}
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                  />
-                  <InputValidateControl
-                    inputStyle={styles.inputStyle}
-                    labelStyle={styles.labelStyle}
-                    selectionColor={BASE_COLORS.steelBlueColor}
-                    placeholder={t('email')}
-                    placeholderTextColor={BASE_COLORS.steelBlueColor}
-                    errors={errors}
-                    control={control}
-                    name={INVITE_CONTACT_FIELDS.email}
-                    rules={ruleEmail}
-                    register={register}
-                    autoCapitalize='none'
-                    autoCorrect={false}
-                    autoFocus={false}
-                    keyboardType='email-address'
-                  />
-                </>
-              )}
-              <View style={[GlobalStyles.mv10]} />
-              {checkInviteLeft() === 0 && (
-                <Link
-                  onPress={onRequestMoreInvite}
-                  h3
-                  bold
-                  style={[GlobalStyles.mv10, styles.link]}
-                  title={t('request_invite')}
-                />
-              )}
-              {inviteComplete ? (
-                <Button
-                  title={t('done')}
-                  textCenter
-                  bordered
-                  onPress={backToNetwork}
-                  containerStyle={styles.buttonCreateInviteContainerStyle}
-                  textStyle={styles.h3BoldDefault}
-                />
-              ) : (
-                  <Button
-                    title={t('share_invite')}
-                    textCenter
-                    bordered
-                    onPress={handleSubmit(onShare)}
-                    containerStyle={styles.buttonCreateInviteContainerStyle}
-                    textStyle={styles.h3BoldDefault}
-                  />
-                )}
-            </View>
-            {inviteComplete && (
-              <View style={styles.listContainer}>
-                <InviteContactItems data={userState.invites} />
-              </View>
-            )}
-
-            <Loading />
-          </Tab>
-          <Tab tabVal={ENetworkInvite.MassInvite}>
-            <MassInvite navigation={navigation}/>
-          </Tab>
-        </TabGroup>
+      <View style={GlobalStyles.mb55}>
+        <Paragraph
+          h4
+          textTealBlue
+          textCenter
+          bold
+          title={t('invite_contact', { count: checkInviteLeft(), left: userState.userInfo.inviteMax })}
+        />
+        <Paragraph h4 textTealBlue textCenter title={t('each_invite')} style={styles.description} />
       </View>
+      <View style={[GlobalStyles.flexColumn]}>
+        <Button
+          title={t('scan_phone')}
+          textCenter
+          bordered
+          onPress={onScan}
+          containerStyle={[styles.buttonCreateInviteContainerStyle, GlobalStyles.mv10]}
+          textStyle={styles.h3BoldDefault}
+        />
+        <View style={[GlobalStyles.mb15, styles.line]} />
+        {!inviteComplete && (
+          <>
+            <InputValidateControl
+              inputStyle={styles.inputStyle}
+              labelStyle={styles.labelStyle}
+              autoFocus={false}
+              selectionColor={BASE_COLORS.steelBlueColor}
+              placeholder={t('name')}
+              placeholderTextColor={BASE_COLORS.steelBlueColor}
+              errors={errors}
+              control={control}
+              name={INVITE_CONTACT_FIELDS.name}
+              rules={ruleName}
+              register={register}
+              autoCapitalize='none'
+              autoCorrect={false}
+            />
+            <InputValidateControl
+              inputStyle={styles.inputStyle}
+              labelStyle={styles.labelStyle}
+              selectionColor={BASE_COLORS.steelBlueColor}
+              placeholder={t('email')}
+              placeholderTextColor={BASE_COLORS.steelBlueColor}
+              errors={errors}
+              control={control}
+              name={INVITE_CONTACT_FIELDS.email}
+              rules={ruleEmail}
+              register={register}
+              autoCapitalize='none'
+              autoCorrect={false}
+              autoFocus={false}
+              keyboardType='email-address'
+            />
+            <View style={GlobalStyles.flexColumn}>
+              <View style={GlobalStyles.flexRow}>
+                <PhoneInput
+                  ref={phoneInput}
+                  defaultCode='SG'
+                  layout='first'
+                  onChangeFormattedText={phoneChangeText}
+                  withDarkTheme
+                  autoFocus
+                  countryPickerButtonStyle={styles.countryStyle}
+                  defaultValue={contactSelected?.phoneNumber ?? ''}
+                  containerStyle={
+                    errors?.phoneNumber ? GlobalStyles.phoneContainerErrorStyle : GlobalStyles.phoneContainerStyle
+                  }
+                  textContainerStyle={GlobalStyles.phoneTextContainerStyle}
+                  textInputStyle={GlobalStyles.phoneTextInputStyle}
+                  codeTextStyle={GlobalStyles.phoneCodeTextInputStyle}
+                />
+              </View>
+              {errors?.phoneNumber?.message && (
+                <Paragraph p style={styles.textError} title={errors?.phoneNumber?.message} />
+              )}
+            </View>
+          </>
+        )}
+        <View style={[GlobalStyles.mv10]} />
+        {checkInviteLeft() === 0 && (
+          <Link
+            onPress={onRequestMoreInvite}
+            h3
+            bold
+            style={[GlobalStyles.mv10, styles.link]}
+            title={t('request_invite')}
+          />
+        )}
+        {inviteComplete ? (
+          <Button
+            title={t('done')}
+            textCenter
+            bordered
+            onPress={backToNetwork}
+            containerStyle={styles.buttonCreateInviteContainerStyle}
+            textStyle={styles.h3BoldDefault}
+          />
+        ) : (
+          <Button
+            title={t('share_invite')}
+            textCenter
+            bordered
+            onPress={handleSubmit(onShare)}
+            containerStyle={styles.buttonCreateInviteContainerStyle}
+            textStyle={styles.h3BoldDefault}
+          />
+        )}
+      </View>
+      {inviteComplete && (
+        <View style={styles.listContainer}>
+          <InviteContactItems data={userState.invites} />
+        </View>
+      )}
+
+      <Loading />
     </InviteContactTemplateScreen>
   );
 };

@@ -2,8 +2,7 @@ import AvatarGradient from './AvatarGradient';
 import BackButton from './BackButton';
 import BlockItem from './BlockItem';
 import BlockItems from './BlockItems';
-import BottomSheet from './BottomSheet';
-import Button from './Button'; 
+import Button from './Button';
 import ButtonSecond from './ButtonSecond';
 import Category from './Category';
 import CheckBox from './CheckBox';
@@ -39,7 +38,6 @@ import ListItems from './ListItems';
 import ListItemsChat from './ListItemsChat';
 import Loading from './Loading';
 import LoadingSecondary from './LoadingSecondary';
-import Maybe from './Maybe';
 import ModalChangeDeadLine from './ModalChangeDeadLine';
 import ModalDialog from './ModalDialog';
 import ModalDialogCommon from './ModalDialogCommon';
@@ -50,11 +48,8 @@ import ModalEndAsk from './ModalEndAsk';
 import ModalExpire from './ModalExpire';
 import Otp from './Otp';
 import Paragraph from './Paragraph';
-import Picker from './Picker';
 import ProfileBlock from './ProfileBlock';
-import ProfileTemplateScreen from './ProfileTemplate';
-import TabGroup from './TabGroup';
-import Tab from './Tab';
+import ProfileTemplateSceen from './ProfileTemplate';
 import Tags from './Tags';
 import TransContent from './TransContent';
 import UserCard from './UserCard';
@@ -95,8 +90,6 @@ export {
   FeedBlockItem,
   UserReferBlockItems,
   UserReferBlockItem,
-  TabGroup,
-  Tab,
   Tags,
   CheckBox,
   DatePicker,
@@ -119,10 +112,7 @@ export {
   IndividualJointBlockItem,
   HomeTemplateScreen,
   InviteContactTemplateScreen,
-  ProfileTemplateScreen,
+  ProfileTemplateSceen,
   ProfileBlock,
   ModalDialogFeedback,
-  Picker,
-  Maybe,
-  BottomSheet,
 };

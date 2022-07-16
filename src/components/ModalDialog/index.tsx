@@ -1,15 +1,14 @@
-import {BASE_COLORS, GlobalStyles} from '~Root/config';
-import {ButtonSecond, Category, Icon, Paragraph} from '~Root/components';
-import {FlatList, TextInput, TouchableOpacity, View} from 'react-native';
+import { BASE_COLORS, GlobalStyles } from '~Root/config';
+import { ButtonSecond, Category, Icon, Paragraph } from '~Root/components';
+import { FlatList, TextInput, TouchableOpacity, View } from 'react-native';
 
-import {IIndustry} from '~Root/services/industry/types';
+import { IIndustry } from '~Root/services/industry/types';
 import Modal from 'react-native-modal';
 import React from 'react';
 import styles from './styles';
-import {useDispatch, useSelector} from 'react-redux';
-import {IGlobalState} from '~Root/types';
-import {updateDataIndustry} from '~Root/services/industry/actions';
-import {industriesDefaultData} from './industriesDefaultData';
+import { useDispatch, useSelector } from 'react-redux';
+import { IGlobalState } from '~Root/types';
+import { updateDataIndustry } from '~Root/services/industry/actions';
 
 interface Props {
   isVisible: boolean;
@@ -39,14 +38,14 @@ const ModalDialog: React.FC<Props> = ({
   title,
 }) => {
   const [selected, setSelected] = React.useState<string[]>(dataSelected ?? []);
-  const {industries} = useSelector((state: IGlobalState) => state.industryState);
-  const dataIndustry = [...industriesDefaultData, ...JSON.parse(JSON.stringify(industries))];
+  const defaultData = ['F&B', 'Fashion', 'Fast-moving consumer goods', 'Film', 'Finance'];
+  const { industries } = useSelector((state: IGlobalState) => state.industryState);
+  const dataIndustry = [...defaultData, ...JSON.parse(JSON.stringify(industries))];
   const [dataSelect, setDataSelect] = React.useState<string[]>(
     dataIndustry.filter((item: string) => !dataSelected?.includes(item)),
   );
   const [dataFilter, setDataFilter] = React.useState<string[]>([]);
   const [text, setText] = React.useState<string>('');
-  const [warningIndustryAmount, setWarningIndustryAmount] = React.useState<boolean>(false);
   const dispatch = useDispatch();
 
   const onSelected = (item: string) => {
@@ -65,8 +64,7 @@ const ModalDialog: React.FC<Props> = ({
       setText(text);
       return;
     }
-    const result = industriesDefaultData.filter((item: string) => item.toLowerCase().includes(text.toLowerCase()));
-    console.log(industries);
+    const result = industries.filter((item: string) => item.toLowerCase().includes(text.toLowerCase()));
     setDataFilter(result);
     setText(text);
   };
@@ -79,17 +77,6 @@ const ModalDialog: React.FC<Props> = ({
     onSelected(item);
     setText('');
     onChangeSearch('');
-  };
-
-  const handleSave = (selected: string[]) => {
-    if (selected.length > 6) {
-      setWarningIndustryAmount(true);
-      setTimeout(() => {
-        setWarningIndustryAmount(false);
-      }, 2000);
-      return;
-    }
-    onSave(selected);
   };
 
   return (
@@ -117,7 +104,7 @@ const ModalDialog: React.FC<Props> = ({
             numColumns={1}
             key={'grid'}
             keyExtractor={(item, index) => `grid-${index}`}
-            renderItem={({item, index}: {item: string; index: number}) => (
+            renderItem={({ item, index }: { item: string; index: number }) => (
               <View key={`item-${index}`} style={styles.itemContainer}>
                 <TouchableOpacity onPress={() => onSelected(item)} style={styles.item}>
                   <Paragraph h5 textBlack title={item} />
@@ -145,18 +132,11 @@ const ModalDialog: React.FC<Props> = ({
                 ))}
               </View>
             )}
-            <View style={[GlobalStyles.mt10, GlobalStyles.alignCenter]}>
-              <Paragraph
-                h5
-                textIndianRedColor
-                title={warningIndustryAmount ? 'You can only select 6 industries' : ''}
-              />
-            </View>
             <ButtonSecond
               title='Done'
               buttonContainerStyle={styles.btnDone}
               titleStyle={styles.titleStyle}
-              onPress={() => handleSave(selected)}
+              onPress={() => onSave(selected)}
               showIcon={false}
             />
           </View>

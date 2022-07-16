@@ -1,32 +1,32 @@
 import React from 'react';
-import {KeyboardAvoidingView, NativeModules, Platform, ScrollView, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {useTranslation} from 'react-i18next';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {useDispatch, useSelector} from 'react-redux';
+import { KeyboardAvoidingView, NativeModules, Platform, ScrollView, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { useTranslation } from 'react-i18next';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useDispatch, useSelector } from 'react-redux';
 
-import {Button, HeaderSmallBlue, ListItem, Loading, Paragraph} from '~Root/components';
-import {hideLoading, showLoading} from '~Root/services/loading/actions';
-import {createAsk, updateAsk} from '~Root/services/ask/actions';
-import {MainNavigatorParamsList} from '~Root/navigation/config';
-import {AppRoute} from '~Root/navigation/AppRoute';
-import {GlobalStyles} from '~Root/config';
-import {IGlobalState} from '~Root/types';
-import {adjust} from '~Root/utils';
+import { Button, HeaderSmallBlue, ListItem, Loading, Paragraph } from '~Root/components';
+import { hideLoading, showLoading } from '~Root/services/loading/actions';
+import { createAsk, updateAsk } from '~Root/services/ask/actions';
+import { MainNavigatorParamsList } from '~Root/navigation/config';
+import { AppRoute } from '~Root/navigation/AppRoute';
+import { GlobalStyles } from '~Root/config';
+import { IGlobalState } from '~Root/types';
+import { adjust } from '~Root/utils';
 import styles from './styles';
 import moment from 'moment';
 import Toast from 'react-native-toast-message';
-import {getUserAskData} from '~Root/services/user/actions';
+import { getUserAskData } from '~Root/services/user/actions';
 import Flurry from 'react-native-flurry-sdk';
-const {ReactNativeFlurry} = NativeModules;
+const { ReactNativeFlurry } = NativeModules;
 
 type Props = NativeStackScreenProps<MainNavigatorParamsList, AppRoute.ASK_PREVIEW>;
 
-const AskPreviewScreen = ({navigation}: Props) => {
-  const {t} = useTranslation();
+const AskPreviewScreen = ({ navigation }: Props) => {
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const {data_ask_preview, data_ask_selected} = useSelector((state: IGlobalState) => state.askState);
+  const { data_ask_preview, data_ask_selected } = useSelector((state: IGlobalState) => state.askState);
   const userState = useSelector((state: IGlobalState) => state.userState);
 
   const offsetKeyboard = Platform.select({
@@ -37,7 +37,7 @@ const AskPreviewScreen = ({navigation}: Props) => {
   const onPublish = () => {
     dispatch(showLoading());
     const code = data_ask_preview?.code;
-    const body = {...data_ask_preview};
+    const body = { ...data_ask_preview };
     if (body.endDate) {
       body.endDate = moment(body.endDate).format('DD/MM/YYYY');
     }
@@ -61,7 +61,7 @@ const AskPreviewScreen = ({navigation}: Props) => {
             dispatch(getUserAskData(page, limit));
             navigation.navigate(AppRoute.YOUR_ASKS);
             // void analytics().logEvent('create_ask', body);
-            Flurry.logEvent('Update_Ask', {data: JSON.stringify(result.data)});
+            Flurry.logEvent('Update_Ask', { data: JSON.stringify(result.data) });
           }
         }),
       );
@@ -82,7 +82,7 @@ const AskPreviewScreen = ({navigation}: Props) => {
           const limit = userState?.askPagination?.recordPerPage ?? 50;
           dispatch(getUserAskData(page, limit));
           navigation.navigate(AppRoute.YOUR_ASKS);
-          Flurry.logEvent('Create_Ask', {data: JSON.stringify(result.data)});
+          Flurry.logEvent('Create_Ask', { data: JSON.stringify(result.data) });
         }
       }),
     );
@@ -124,7 +124,7 @@ const AskPreviewScreen = ({navigation}: Props) => {
                   textStyle={styles.textStyle}
                 />
               </View>
-              <Paragraph italic p textIndianRedColor title={t('ask_cannot_edited')} style={[styles.askHighlight]} />
+              {/* <Paragraph italic title={t('ask_cannot_edited')} style={[GlobalStyles.mt20, styles.askHighlight]} /> */}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>

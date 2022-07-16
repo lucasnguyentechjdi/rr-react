@@ -86,17 +86,18 @@ const HomeTemplateScreen: React.FC<Props> = ({
   return (
     <View style={GlobalStyles.containerWhite}>
       <HeaderNormalBlue onBack={onBack} isBackButton={isBackButton} containerHeaderStyle={containerHeaderStyle}>
-        <TouchableOpacity
-          style={[GlobalStyles.avatarContainer, styles.headerContent]}
-          onLongPress={onShowVersion}
-          onPress={onProfile}>
+        <View style={styles.headerContent}>
           <View style={[GlobalStyles.flexRow, styles.headerWrapper]}>
-
-            {profile?.avatar ? (
-              <Image source={{ uri: imageUrl(profile?.avatar) }} style={styles.imageProfile} />
-            ) : (
-              <Icon name='user-circle' size={80} color={BASE_COLORS.blackColor} style={GlobalStyles.avatar} />
-            )}
+            <TouchableOpacity
+              style={[GlobalStyles.avatarContainer, { flex: 4 }]}
+              onLongPress={onShowVersion}
+              onPress={onProfile}>
+              {profile?.avatar ? (
+                <Image source={{ uri: imageUrl(profile?.avatar) }} style={styles.imageProfile} />
+              ) : (
+                <Icon name='user-circle' size={80} color={BASE_COLORS.blackColor} style={GlobalStyles.avatar} />
+              )}
+            </TouchableOpacity>
             <View style={[styles.userInfoArea, GlobalStyles.ml10, { flex: 8 }]}>
               <Paragraph p bold600 textWhite title={getUserName()} style={[GlobalStyles.mb5, styles.title]} />
               {checkProfileTitle(profile?.title) && (
@@ -104,7 +105,7 @@ const HomeTemplateScreen: React.FC<Props> = ({
               )}
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
         {showLogout && (
           <TouchableOpacity onPress={onShowModal}>
             <View style={styles.logoutIcon}>

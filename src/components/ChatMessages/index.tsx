@@ -8,7 +8,6 @@ import {IMessage} from '~Root/services/chat/types';
 import {getChatMessageData, receiveChatMessage, updateLastChatMessage} from '~Root/services/chat/actions';
 import {listenNewMessage} from '~Root/services/socket/listen';
 import {SocketContext} from '~Root/services/socket/context';
-import {GlobalStyles} from '~Root/config';
 
 const ChatMessages = () => {
   const {messages} = useSelector((state: IGlobalState) => state.chatState);
@@ -45,7 +44,6 @@ const ChatMessages = () => {
         nestedScrollEnabled={true}
         scrollEventThrottle={1}
         inverted={true}
-        contentContainerStyle={[GlobalStyles.pv10]}
         onScroll={Animated.event(
           [
             {

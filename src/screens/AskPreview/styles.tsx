@@ -72,6 +72,7 @@ export default StyleSheet.create({
   mainButtonContainer: {
     justifyContent: 'center',
     alignSelf: 'center',
+    flex: 1,
   },
   textStyle: {
     ...GlobalStyles.h4,
@@ -86,7 +87,6 @@ export default StyleSheet.create({
     backgroundColor: BASE_COLORS.oxleyColor,
   },
   askHighlight: {
-    ...GlobalStyles.mt15,
     textAlign: 'center',
   },
 });

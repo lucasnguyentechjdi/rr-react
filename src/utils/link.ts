@@ -1,6 +1,7 @@
-import {IAsk} from '~Root/services/ask/types';
-import {IRandomDataFeed} from '~Root/services/feed/types';
 import AskAPI from '~Root/services/ask/apis';
+import {IAsk} from '~Root/services/ask/types';
+// import dynamicLinks from '@react-native-firebase/dynamic-links';
+import {IRandomDataFeed} from '~Root/services/feed/types';
 import UserAPI from '~Root/services/user/apis';
 
 export const buildShareInviteLink = async (secretCode: string) => {

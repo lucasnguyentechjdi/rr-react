@@ -1,9 +1,9 @@
-import {BASE_COLORS, BASE_FONTS, BASE_STYLES} from './theme';
-import {Dimensions, PixelRatio, Platform, StyleSheet} from 'react-native';
-import {adjust, buttonPositionByRatio} from '~Root/utils';
-import {headerTop, heightByRatio, lineHeightByRatio} from '~Root/utils/functions';
+import { BASE_COLORS, BASE_FONTS, BASE_STYLES } from './theme';
+import { Dimensions, PixelRatio, Platform, StyleSheet } from 'react-native';
+import { adjust, buttonPositionByRatio } from '~Root/utils';
+import { headerTop, heightByRatio, lineHeightByRatio } from '~Root/utils/functions';
 
-import {HEADER} from '.';
+import { HEADER } from '.';
 
 export const ratioButton = buttonPositionByRatio();
 
@@ -100,30 +100,30 @@ export const GlobalStyles = StyleSheet.create({
   containerHeaderBlueXSSM: {
     height: HEADER.Header.EXS,
     // height: PixelRatio.roundToNearestPixel(HEADER.Header.EXS),
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
   },
   containerHeaderBlueSM: {
     height: HEADER.Header.SM,
     // height: PixelRatio.roundToNearestPixel(HEADER.Header.SM),
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
     paddingHorizontal: PixelRatio.roundToNearestPixel(15),
   },
   containerHeaderBlueMD: {
     height: HEADER.Header.MD,
     // height: PixelRatio.roundToNearestPixel(HEADER.Header.MD),
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
   },
   containerHeaderBlueNew: {
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
   },
   containerHeaderBlueBig: {
     height: HEADER.Header.LG,
     // height: PixelRatio.roundToNearestPixel(HEADER.Header.LG),
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
   },
   containerTealBlue: {
     flex: 1,
-    backgroundColor: BASE_COLORS.steelBlue,
+    backgroundColor: BASE_COLORS.tealBlueColor,
   },
   containerWhite: {
     flex: 1,
@@ -581,7 +581,7 @@ export const GlobalStyles = StyleSheet.create({
     paddingBottom: adjust(150),
   },
   pr5: {
-    paddingRight: adjust(5),
+    paddingRight: adjust(5)
   },
   pl5: {
     paddingLeft: adjust(5),
@@ -611,8 +611,8 @@ export const GlobalStyles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   iconBack: {
-    width: adjust(14),
-    height: adjust(24),
+    width: adjust(16),
+    height: adjust(29),
   },
   inputStyle: {
     height: adjust(48),
@@ -747,18 +747,14 @@ export const GlobalStyles = StyleSheet.create({
     alignItems: 'center',
   },
   alignBaseline: {
-    alignSelf: 'baseline',
+    alignSelf: 'baseline'
   },
   relativeBlock: {
     position: 'relative',
   },
   textJustify: {
     textAlign: 'justify',
-  },
-  logo: {
-    width: adjust(80),
-    height: adjust(80),
-  },
+  }
 });
 
 /**

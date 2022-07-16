@@ -372,32 +372,36 @@ const ChatInternalScreen = ({navigation, route}: Props) => {
           </View>
         </TouchableOpacity>
       )}
-      <View style={[GlobalStyles.fullWidth, GlobalStyles.ph30, GlobalStyles.pv20, styles.chatInternalHeader]}>
-        <View style={[GlobalStyles.flexRow, GlobalStyles.justifyBetween, GlobalStyles.alignCenter, GlobalStyles.mb10]}>
-          <TouchableOpacity onPress={onBack}>
-            <Image source={IMAGES.iconBack} style={GlobalStyles.iconBack} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={goToContextSwitch}
-            style={[GlobalStyles.avatarContainer, GlobalStyles.mr10, GlobalStyles.mt10]}>
+      <Header onBack={onBack} isBackButton={false} containerHeaderStyle={styles.newHeader}>
+        <TouchableOpacity onPress={onBack} style={[styles.closeBtn, GlobalStyles.mr10, GlobalStyles.mt10]}>
+          <Icon name='times' size={adjust(15)} color={BASE_COLORS.whiteColor} />
+        </TouchableOpacity>
+        <View style={[GlobalStyles.flexRow, GlobalStyles.ph15]}>
+          <TouchableOpacity onPress={goToContextSwitch} style={[styles.avatarContainer, GlobalStyles.mr10]}>
             <Image source={IMAGES.iconChatHamburger} style={styles.hamburger} />
+            {totalNewMessage > 0 && (
+              <View style={styles.count}>
+                <Paragraph p textWhite title={totalNewMessage.toString()} style={styles.countText} numberOfLines={1} />
+              </View>
+            )}
           </TouchableOpacity>
-        </View>
-        <View style={[GlobalStyles.flexRow, GlobalStyles.alignCenter]}>
-          <View>
+          <View style={GlobalStyles.mr10}>
             <UserAvatar user={userChatShow?.user} size={60} imageSize={80} />
           </View>
-          <View style={styles.chatUserInfo}>
-            <Paragraph
-              bold600
-              textWhite
-              h4
-              title={`${userChatShow?.user?.firstName ?? ''} ${userChatShow?.user?.lastName ?? ''}`.toUpperCase()}
-            />
-            <Paragraph textWhite h5 title={`${userChatShow?.user?.title}`} />
+          <View>
+            <Text style={styles.roleText}>{roleText()}</Text>
+            <View style={GlobalStyles.flexColumn}>
+              <Paragraph
+                bold600
+                textWhite
+                h3
+                title={`${userChatShow?.user?.firstName ?? ''} ${userChatShow?.user?.lastName ?? ''}`.toUpperCase()}
+                style={GlobalStyles.mb15}
+              />
+            </View>
           </View>
         </View>
-      </View>
+      </Header>
       <TouchableOpacity onPress={onViewAsk}>
         <View style={[GlobalStyles.flexRow, styles.viewAskContainer]}>
           <Paragraph

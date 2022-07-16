@@ -35,7 +35,7 @@ const InviteContactTemplateScreen: React.FC<Props> = ({
           behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
           keyboardVerticalOffset={offsetKeyboard}>
           <ScrollView
-            style={[styles.scrollView]}
+            style={[GlobalStyles.scrollViewWhite, styles.scrollView]}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             contentContainerStyle={[GlobalStyles.flexColumn]}>

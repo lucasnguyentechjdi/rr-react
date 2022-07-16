@@ -136,7 +136,6 @@ const AppNavigator = (props: any) => {
   useEffect(() => {
     const initLanguage = async () => {
       await i18n.use(initReactI18next).init({
-        compatibilityJSON: 'v3',
         resources: BASE_SETTINGS.resourcesLanguage,
         lng: BASE_SETTINGS.defaultLanguage,
         fallbackLng: BASE_SETTINGS.defaultLanguage,

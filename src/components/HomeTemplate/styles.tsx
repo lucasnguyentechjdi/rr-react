@@ -31,8 +31,7 @@ export default StyleSheet.create({
   headerContent: {
     height: '100%',
     width: '100%',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'center'
   },
   headerWrapper: {
     alignItems: 'center',

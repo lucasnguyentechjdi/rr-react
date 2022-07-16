@@ -1,27 +1,28 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Text, TouchableOpacity, View } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { BlockItems, Button, Icon, ModalDialogCommon, Paragraph } from '~Root/components';
 import { BASE_COLORS, GlobalStyles } from '~Root/config';
-import { getAskDetail, viewDetailChat } from '~Root/services/chat/actions';
+import { BlockItems, Button, ButtonSecond, Icon, ModalDialogCommon, Paragraph } from '~Root/components';
 import { IInvite, INVITE_STATUS } from '~Root/services/invite/types';
-import { getUserInviteData, getUserNetworkData, onRevokeInvite, removeSuggestion } from '~Root/services/user/actions';
+import React, { useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import { Trans, useTranslation } from 'react-i18next';
+import { getAskDetail, viewDetailChat } from '~Root/services/chat/actions';
+import { getUserInviteData, getUserNetworkData, onRevokeInvite } from '~Root/services/user/actions';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import Toast from 'react-native-toast-message';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import Tooltip from 'react-native-walkthrough-tooltip';
-import ModalInvite from '~Root/components/ModalInvite';
 import { AppRoute } from '~Root/navigation/AppRoute';
-import { MainNavigatorParamsList } from '~Root/navigation/config';
 import { IChat } from '~Root/services/chat/types';
+import { IGlobalState } from '~Root/types';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { MainNavigatorParamsList } from '~Root/navigation/config';
+import ModalInvite from '~Root/components/ModalInvite';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import PenIcon from './icon/Pen';
+import Toast from 'react-native-toast-message';
+import Tooltip from 'react-native-walkthrough-tooltip';
+import { adjust } from '~Root/utils';
+import { hideLoading } from '~Root/services/loading/actions';
 import { removeInvite } from '~Root/services/invite';
 import { removeNetwork } from '~Root/services/network';
-import { IGlobalState } from '~Root/types';
-import { adjust } from '~Root/utils';
 import styles from './styles';
-import UserAPI from '~Root/services/user/apis';
 
 interface INetwork {
   invokeInvite: IInvite | null;
@@ -44,8 +45,6 @@ const TrustNetwork: React.FC<Props> = ({
   const dispatch = useDispatch();
   const userState = useSelector((state: IGlobalState) => state.userState);
 
-  const [isSuggestModal, setIsSuggestModal] = useState(false);
-
   const [confirmVisible, showConfirm] = useState({
     visibleButton: false,
     visibleModal: false,
@@ -60,7 +59,7 @@ const TrustNetwork: React.FC<Props> = ({
     if (item) {
       dispatch(onRevokeInvite(item));
     }
-    showConfirm({ ...confirmVisible, visibleModal: false });
+    showConfirm({ ...confirmVisible, visibleModal: !confirmVisible.visibleModal });
   };
 
   const onPending = (item?: IInvite) => {
@@ -72,39 +71,10 @@ const TrustNetwork: React.FC<Props> = ({
   };
 
   const onCancel = () => {
-    showConfirm({ ...confirmVisible, visibleModal: false });
-    setIsSuggestModal(false);
+    showConfirm({ ...confirmVisible, visibleModal: !confirmVisible.visibleModal });
   };
 
-  const showModalRejectSuggestion = () => {
-    setIsSuggestModal(true);
-    showConfirm({ ...confirmVisible, visibleModal: true });
-  }
-
-  const handleSuggest = async (payload: { isAccepted: boolean }) => {
-    const result: any = await UserAPI.handleSuggestConnection(payload);
-    let text = t('add_success');
-    if (result.success && !payload.isAccepted) {
-      text = t('remove_suggestion');
-    }
-    dispatch(getUserNetworkData(false));
-    dispatch(getUserInviteData());
-    dispatch(removeSuggestion());
-    onCancel();
-    Toast.show({
-      position: 'bottom',
-      type: result.success ? 'success' : 'error',
-      text1: result.success ? text : result.message,
-      visibilityTime: 2000,
-      autoHide: true,
-    });
-  }
-
   const onPressConfirm = async () => {
-    if (isSuggestModal) {
-      handleSuggest({ isAccepted: false });
-      return;
-    }
     let result: any = false;
     console.log(invokeInvite);
     let text = t('revoke_success');
@@ -125,7 +95,7 @@ const TrustNetwork: React.FC<Props> = ({
     if (result.success) {
       dispatch(onRevokeInvite(null));
       dispatch(getUserInviteData());
-      dispatch(getUserNetworkData(false));
+      dispatch(getUserNetworkData());
       showConfirm({ ...confirmVisible, visibleModal: !confirmVisible.visibleModal });
     }
   };
@@ -141,12 +111,8 @@ const TrustNetwork: React.FC<Props> = ({
         type: 'network',
       };
     });
-    return [...networks, ...invites]
-  }
-
-  useEffect(() => {
-
-  })
+    return [...networks, ...invites];
+  };
 
   const checkInviteLeft = () => {
     const totalInvited = userState.invites.filter(item => item.status !== 'approved').length;
@@ -193,8 +159,9 @@ const TrustNetwork: React.FC<Props> = ({
   return (
     <>
       <View style={styles.networkContainer}>
-        <View style={[styles.askHeader]}>
-          <Paragraph h4 title={t('your_trust_network')} style={[styles.titleBlue]} />
+        <View style={[styles.askHeader, styles.askHeaderTrustNetwork]}>
+          <Paragraph h5 title={t('your_trust_network')} style={[styles.titleBlue]} />
+
           <Tooltip
             isVisible={showTooltip}
             backgroundColor='transparent'
@@ -238,9 +205,6 @@ const TrustNetwork: React.FC<Props> = ({
             onItemClick={onItemClick}
             onChat={onChat}
             isVisible={confirmVisible.visibleButton}
-            isSuggest={userState.userInfo?.isSuggest}
-            handleSuggestConnection={handleSuggest}
-            showModalRejectSuggestion={showModalRejectSuggestion}
           />
         </View>
         <View style={styles.mainButtonContainer}>
@@ -254,7 +218,7 @@ const TrustNetwork: React.FC<Props> = ({
         </View>
         <ModalDialogCommon
           isVisible={confirmVisible.visibleModal}
-          onHideModal={onCancel}
+          onHideModal={onConfirm}
           isDefault={false}
           styleModal={GlobalStyles.styleModal}
           styleModalContainer={GlobalStyles.styleModalContainer}>
@@ -264,19 +228,15 @@ const TrustNetwork: React.FC<Props> = ({
                 <>
                   <View style={GlobalStyles.flexRow}>
                     <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInvite]}>
-                      {isSuggestModal ? 'Reject this suggestion?' : 'Are you sure you want to remove'}&nbsp;
+                      Are you sure you want to remove&nbsp;
                     </Text>
                     <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInviteHighlight]}>
                       {`${invokeInvite?.user?.firstName ?? ''} ${invokeInvite?.user?.lastName ?? ''}`}
                     </Text>
                   </View>
                   <View style={GlobalStyles.flexRow}>
-                    {!isSuggestModal &&
-                      <>
-                        <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInvite]}>From your&nbsp;</Text>
-                        <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInviteHighlight]}>Trust Network</Text>
-                      </>
-                    }
+                    <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInvite]}>From your&nbsp;</Text>
+                    <Text style={[GlobalStyles.inlineText, GlobalStyles.textRevokeInviteHighlight]}>Trust Network</Text>
                   </View>
                 </>
               )}

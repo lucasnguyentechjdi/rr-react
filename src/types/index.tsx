@@ -9,7 +9,6 @@ import {ILoginState} from '~Root/services/login/types';
 import {IMatchesState} from '~Root/services/matches/types';
 import {IRegisterState} from '~Root/services/register/types';
 import {IUser, IUserState} from '~Root/services/user/types';
-import {TInviteState} from '~Root/services/invite/types';
 
 // Global state
 export interface IGlobalState {
@@ -24,7 +23,6 @@ export interface IGlobalState {
   contactState: IContactState;
   feedState: IFeedState;
   registerState: IRegisterState;
-  inviteState: TInviteState
 }
 
 // Interface for async call steps

@@ -14,7 +14,6 @@ import matchesReducer from '~Root/services/matches/reducer';
 import {persistReducer} from 'redux-persist';
 import registerReducer from '~Root/services/register/reducer';
 import userReducer from '~Root/services/user/reducer';
-import inviteReducer from '~Root/services/invite/reducer';
 
 const rootPersistConfig = {
   key: 'root',
@@ -39,7 +38,6 @@ const appReducer = combineReducers<IGlobalState>({
   contactState: contactReducer,
   feedState: feedReducer,
   registerState: registerReducer,
-  inviteState: inviteReducer,
 });
 
 export const rootReducer = (state: IGlobalState | undefined, action: any) => {

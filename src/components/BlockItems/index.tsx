@@ -1,41 +1,33 @@
-import React, { useLayoutEffect, useState } from 'react';
-import { Animated, RefreshControl } from 'react-native';
+import React, {useState} from 'react';
+import {Animated, RefreshControl} from 'react-native';
 
-import { BASE_COLORS } from '~Root/config';
-import { BlockItem } from '~Root/components';
+import {BASE_COLORS} from '~Root/config';
+import {BlockItem} from '~Root/components';
 import styles from './styles';
-import { IInvite } from '~Root/services/invite/types';
-import { imageUrl } from '~Root/services/upload';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserInviteData, getUserNetworkData } from '~Root/services/user/actions';
-import { IChat } from '~Root/services/chat/types';
-import { IUser } from '~Root/services/user/types';
-import { IGlobalState } from '~Root/types';
+import {IInvite} from '~Root/services/invite/types';
+import {imageUrl} from '~Root/services/upload';
+import {useDispatch} from 'react-redux';
+import {getUserInviteData, getUserNetworkData} from '~Root/services/user/actions';
+import {IChat} from '~Root/services/chat/types';
+
 interface Props {
   data: any[];
   isVisible: boolean;
-  isSuggest?: boolean;
   onConfirm: (item: IInvite) => void;
   onPending: (item: IInvite) => void;
   onItemClick: (item: IInvite) => void;
   onChat: (item: IChat) => void;
-  handleSuggestConnection?: (payload: { isAccepted: boolean }) => void;
-  showModalRejectSuggestion?: () => void;
 }
 
 const BlockItems: React.FC<Props> = ({
   data,
   isVisible = false,
-  isSuggest = false,
-  onConfirm = () => { },
-  onPending = () => { },
-  onChat = () => { },
-  onItemClick = () => { },
-  handleSuggestConnection = () => { },
-  showModalRejectSuggestion = () => { },
+  onConfirm = () => {},
+  onPending = () => {},
+  onChat = () => {},
+  onItemClick = () => {},
 }: Props) => {
   const [refreshing, setRefreshing] = useState(false);
-  const userState = useSelector((state: IGlobalState) => state.userState);
   const dispatch = useDispatch();
   // const [isLazyload, setLazyload] = useState(false);
 
@@ -44,11 +36,11 @@ const BlockItems: React.FC<Props> = ({
   const onRefresh = () => {
     setRefreshing(true);
     dispatch(getUserInviteData());
-    dispatch(getUserNetworkData(userState.userInfo?.isSuggest));
+    dispatch(getUserNetworkData());
     setRefreshing(false);
   };
 
-  const onPageChanged = () => { };
+  const onPageChanged = () => {};
 
   const getName = (item: IInvite) => {
     if (item.user) {
@@ -83,13 +75,13 @@ const BlockItems: React.FC<Props> = ({
             },
           },
         ],
-        { useNativeDriver: true },
+        {useNativeDriver: true},
       )}
       showsVerticalScrollIndicator={false}
       data={data}
       key={'block'}
       keyExtractor={(item, index) => `block-${item.code}-${index}`}
-      renderItem={({ item, index }: { item: IInvite | any, index: number }) =>
+      renderItem={({item}: {item: IInvite}) => (
         <BlockItem
           id={item?.code}
           name={getName(item)}
@@ -103,12 +95,9 @@ const BlockItems: React.FC<Props> = ({
           showConfirm={isVisible}
           onConfirm={() => onConfirm(item)}
           onPending={() => onPending(item)}
-          onAddSuggest={() => handleSuggestConnection({ isAccepted: true })}
-          onRejectSuggest={() => showModalRejectSuggestion()}
           onChat={onChat}
-          isSuggest={isSuggest && index === 0}
         />
-      }
+      )}
       onEndReached={onPageChanged}
       onEndReachedThreshold={0.5}
     />

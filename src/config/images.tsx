@@ -22,5 +22,4 @@ export const IMAGES = {
   iconCopyLink: require('../assets/images/icon-copy-link.png'),
   iconSearch: require('../assets/images/icon-search.png'),
   iconChatHamburger: require('../assets/images/chat-hamburger.png'),
-  logo: require('../assets/images/logo.png'),
 };

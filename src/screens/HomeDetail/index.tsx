@@ -1,39 +1,38 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, Share, Text, TouchableOpacity, View} from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { ScrollView, Share, Text, TouchableOpacity, View } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Button,
-  ButtonSecond,
-  Icon,
+  ButtonSecond, Icon,
   Loading,
   ModalChangeDeadLine,
   ModalEndAsk,
   ModalExpire,
-  Paragraph,
+  Paragraph
 } from '~Root/components';
-import {BASE_COLORS, GlobalStyles} from '~Root/config';
-import {askLocation, getAskByRefId} from '~Root/services/ask/actions';
-import {getAskDetail, viewDetailChat} from '~Root/services/chat/actions';
-import {hideLoading, showLoading} from '~Root/services/loading/actions';
+import { BASE_COLORS, GlobalStyles } from '~Root/config';
+import { askLocation, getAskByRefId } from '~Root/services/ask/actions';
+import { getAskDetail, viewDetailChat } from '~Root/services/chat/actions';
+import { hideLoading, showLoading } from '~Root/services/loading/actions';
 
 import Clipboard from '@react-native-community/clipboard';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import moment from 'moment';
-import {useTranslation} from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import Flurry from 'react-native-flurry-sdk';
 import Toast from 'react-native-toast-message';
-import {AppRoute} from '~Root/navigation/AppRoute';
-import {MainNavigatorParamsList} from '~Root/navigation/config';
+import { AppRoute } from '~Root/navigation/AppRoute';
+import { MainNavigatorParamsList } from '~Root/navigation/config';
 import AskAPI from '~Root/services/ask/apis';
 import ChatAPI from '~Root/services/chat/apis';
-import {getUserAskData} from '~Root/services/user/actions';
-import {IUserState} from '~Root/services/user/types';
-import {IGlobalState} from '~Root/types';
-import {adjust, buildShareLink} from '~Root/utils';
-import {checkHourLeft, timeLeftFormat} from '~Root/utils/functions';
+import { getUserAskData } from '~Root/services/user/actions';
+import { IUserState } from '~Root/services/user/types';
+import { IGlobalState } from '~Root/types';
+import { adjust, buildShareLink } from '~Root/utils';
+import { checkHourLeft, timeLeftFormat } from '~Root/utils/functions';
 import styles from './styles';
 import Location from './icon/Location';
-import Calendar from './icon/Calendar';
+import Calendar from './icon/Calendar'
 import AngleLeft from './icon/AngleLeft';
 import Tooltip from 'react-native-walkthrough-tooltip';
 import MenuEdit from './icon/MenuEdit';
@@ -42,14 +41,14 @@ import MenuEnd from './icon/MenuEnd';
 
 type Props = NativeStackScreenProps<MainNavigatorParamsList, AppRoute.HOME_DETAIL>;
 
-const HomeDetailScreen = ({navigation, route}: Props) => {
-  const {t} = useTranslation();
+const HomeDetailScreen = ({ navigation, route }: Props) => {
+  const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const {userInfo, askPagination}: IUserState = useSelector((state: IGlobalState) => state.userState);
-  const {isLoggedIn} = useSelector((state: IGlobalState) => state.authState);
+  const { userInfo, askPagination }: IUserState = useSelector((state: IGlobalState) => state.userState);
+  const { isLoggedIn } = useSelector((state: IGlobalState) => state.authState);
   const loadingState = useSelector((state: IGlobalState) => state.loadingState);
-  const {data_ask_selected} = useSelector((state: IGlobalState) => state.askState);
+  const { data_ask_selected } = useSelector((state: IGlobalState) => state.askState);
   const [showEditProfile, setShowEditProfile] = useState(false);
   const [isVisible, setModalVisible] = useState(false);
   const [isVisibleExpire, setModalExpireVisible] = useState(false);
@@ -59,8 +58,6 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
   });
   const [isVisibleEndAsk, setModalEndAskVisible] = useState(false);
   const [optionOwnerAsk, setOptionOwnerAsk] = useState(false);
-
-  const editPermission = moment(moment()).diff(data_ask_selected?.createdAt, 'minute') > 65;
 
   useEffect(() => {
     const code = route.params?.reference_id;
@@ -89,7 +86,7 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
 
   const onProfile = () => {
     if (data_ask_selected?.userCode !== userInfo.code && data_ask_selected?.user) {
-      navigation.navigate(AppRoute.GUEST_PROFILE, {userInfo: data_ask_selected?.user});
+      navigation.navigate(AppRoute.GUEST_PROFILE, { userInfo: data_ask_selected?.user });
       return;
     }
     navigation.navigate(AppRoute.PROFILE);
@@ -101,7 +98,7 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
 
   const onOptionPress = () => {
     setOptionOwnerAsk(!optionOwnerAsk);
-  };
+  }
 
   const onEditProfile = () => {
     setShowEditProfile(!showEditProfile);
@@ -156,7 +153,7 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
     }
     dispatch(viewDetailChat(chatInfo.data));
     dispatch(getAskDetail(chatInfo.data.askCode));
-    navigation.navigate(AppRoute.CHAT_INTERNAL, {chatInfo: chatInfo.data});
+    navigation.navigate(AppRoute.CHAT_INTERNAL, { chatInfo: chatInfo.data });
   };
 
   const onShare = async () => {
@@ -195,7 +192,7 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
   };
 
   const onVisibleModal = () => {
-    setVisibleModal({...visibleModal, modalRefer: !visibleModal.modalRefer});
+    setVisibleModal({ ...visibleModal, modalRefer: !visibleModal.modalRefer });
   };
 
   if (loadingState?.loading) {
@@ -236,22 +233,12 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
     <View style={styles.container}>
       <ScrollView>
         <View style={[GlobalStyles.pt20, styles.header]}>
-          <TouchableOpacity
-            onPress={onBack}
-            style={[GlobalStyles.flexRow, GlobalStyles.pl20, GlobalStyles.alignCenter, GlobalStyles.alignBaseline]}>
-            <Text>
-              <AngleLeft />
-            </Text>
-            <Paragraph h5 textBlack title={'Back'} style={GlobalStyles.ml10} />
+          <TouchableOpacity onPress={onBack} style={[GlobalStyles.flexRow, GlobalStyles.pl20, GlobalStyles.alignCenter, GlobalStyles.alignBaseline]}>
+            <Text><AngleLeft /></Text>
+            <Paragraph h5 textBlack title={"Back"} style={GlobalStyles.ml10} />
           </TouchableOpacity>
           <View style={[GlobalStyles.mh30, GlobalStyles.mt20]}>
-            <View
-              style={[
-                GlobalStyles.flexRow,
-                GlobalStyles.alignCenter,
-                GlobalStyles.justifyBetween,
-                !data_ask_selected?.endDate && {justifyContent: 'flex-end'},
-              ]}>
+            <View style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, GlobalStyles.justifyBetween, !data_ask_selected?.endDate && { justifyContent: 'flex-end' }]}>
               {data_ask_selected?.endDate && !data_ask_selected.noEndDate && (
                 <View style={GlobalStyles.alignBaseline}>
                   <Paragraph
@@ -259,53 +246,37 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
                     textGray={checkHourLeft(data_ask_selected.endDate) || false}
                     bold
                     title={`${timeLeftFormat(data_ask_selected?.endDate)}`}
-                    style={[GlobalStyles.mb10, styles.timeTag]}
-                  />
+                    style={[GlobalStyles.mb10, styles.timeTag]} />
                 </View>
               )}
-              {data_ask_selected?.userCode === userInfo.code && (
+              {data_ask_selected?.userCode === userInfo.code &&
                 <Tooltip
                   isVisible={optionOwnerAsk}
                   onClose={onOptionPress}
                   contentStyle={styles.dropDownContentStyle}
                   content={
                     <View>
-                      <TouchableOpacity
-                        style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.menuItem]}
-                        onPress={editPermission ? onEdiAsk : () => {}}
-                        activeOpacity={editPermission ? 0.6 : 1}>
-                        <MenuEdit enabled={editPermission} />
-                        <Paragraph
-                          h5
-                          textGray={!editPermission}
-                          textBlack={editPermission}
-                          bold600
-                          title={t('edit_ask')}
-                          style={[GlobalStyles.ml5]}
-                        />
+                      <TouchableOpacity style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.menuItem]} onPress={onEdiAsk} activeOpacity={0.6}>
+                        <MenuEdit />
+                        <Paragraph h5 textBlack bold600 title={t('edit_ask')} style={[GlobalStyles.ml5]} />
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.menuItem]}
-                        onPress={onModalVisible}
-                        activeOpacity={0.6}>
+                      <TouchableOpacity style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, styles.menuItem]} onPress={onModalVisible} activeOpacity={0.6}>
                         <MenuDeadline />
                         <Paragraph h5 textBlack bold600 title={t('change_deadline')} style={[GlobalStyles.ml5]} />
                       </TouchableOpacity>
-                      <TouchableOpacity
-                        style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, GlobalStyles.pv10]}
-                        onPress={onPress}
-                        activeOpacity={0.6}>
+                      <TouchableOpacity style={[GlobalStyles.flexRow, GlobalStyles.alignCenter, GlobalStyles.pv10]} onPress={onPress} activeOpacity={0.6}>
                         <MenuEnd />
                         <Paragraph h5 textBlack bold600 title={t('end_this_ask')} style={[GlobalStyles.ml5]} />
                       </TouchableOpacity>
                     </View>
                   }
-                  placement='bottom'>
+                  placement='bottom'
+                >
                   <TouchableOpacity onPress={onOptionPress} style={[styles.editButton]}>
-                    <Paragraph h1 textBlack title={'...'} style={styles.editIcon} />
+                    <Paragraph h1 textBlack title={"..."} style={styles.editIcon} />
                   </TouchableOpacity>
                 </Tooltip>
-              )}
+              }
             </View>
             <View style={GlobalStyles.fullWidth}>
               <Paragraph p textBlack title={data_ask_selected?.askType?.name} style={GlobalStyles.mb10} />
@@ -328,40 +299,18 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
           </View>
           <View style={[GlobalStyles.flexRow, GlobalStyles.mb10]}>
             <View style={[GlobalStyles.mr5, styles.locationContainer]}>
-              <Text style={GlobalStyles.mr5}>
-                <Location />
-              </Text>
-              <Paragraph
-                p
-                textWhite
-                title={askLocation(data_ask_selected)}
-                style={styles.locationText}
-                numberOfLines={1}
-              />
+              <Text style={GlobalStyles.mr5}><Location /></Text>
+              <Paragraph p textWhite title={askLocation(data_ask_selected)} style={styles.locationText} numberOfLines={1} />
             </View>
-            <View style={styles.dateContainer}>
-              <Text style={GlobalStyles.mr5}>
-                <Calendar />
-              </Text>
-              <Paragraph
-                p
-                textWhite
-                title={
-                  data_ask_selected?.noEndDate
-                    ? t('no_deadline')
-                    : `${moment(data_ask_selected?.endDate).format('MMM DD YYYY')}`
-                }
-                style={styles.fontNotoSan}
-              />
-            </View>
+            {data_ask_selected?.endDate && !data_ask_selected.noEndDate && (
+              <View style={styles.dateContainer}>
+                <Text style={GlobalStyles.mr5}><Calendar /></Text>
+                <Paragraph p textWhite title={`${moment(data_ask_selected.endDate).format('MMM DD YYYY')}`} style={styles.fontNotoSan} />
+              </View>
+            )}
           </View>
           <Text>
-            <Paragraph
-              p
-              textWhite
-              title={` ${data_ask_selected?.additionalInformation ?? ''}`}
-              style={styles.fontNotoSan}
-            />
+            <Paragraph p textWhite title={` ${data_ask_selected?.additionalInformation ?? ''}`} style={styles.fontNotoSan} />
           </Text>
         </View>
         {showEditProfile ? (
@@ -374,24 +323,27 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
                   iconName='pencil-alt'
                   iconColor={BASE_COLORS.whiteColor}
                   onPress={onEdiAsk}
-                  buttonContainerStyle={{...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10}}
-                  titleStyle={styles.whiteText}></ButtonSecond>
+                  buttonContainerStyle={{ ...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10 }}
+                  titleStyle={styles.whiteText}>
+                </ButtonSecond>
                 <ButtonSecond
                   isIconLeft={true}
                   title={t('change_deadline')}
                   onPress={onModalVisible}
-                  buttonContainerStyle={{...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10}}
+                  buttonContainerStyle={{ ...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10 }}
                   iconName='calendar-week'
                   iconColor={BASE_COLORS.whiteColor}
-                  titleStyle={styles.whiteText}></ButtonSecond>
+                  titleStyle={styles.whiteText}>
+                </ButtonSecond>
                 <ButtonSecond
                   isIconLeft={true}
                   title={t('end_this_ask')}
                   onPress={onPress}
-                  buttonContainerStyle={{...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10}}
+                  buttonContainerStyle={{ ...styles.secondButtonStyle, ...GlobalStyles.fullWidth, ...GlobalStyles.mb10 }}
                   titleStyle={styles.whiteText}
                   iconName='times-circle'
-                  iconColor={BASE_COLORS.whiteColor}></ButtonSecond>
+                  iconColor={BASE_COLORS.whiteColor}>
+                </ButtonSecond>
               </View>
             )}
           </>
@@ -407,7 +359,7 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
                     h3
                     textCenter
                     onPress={onChat}
-                    containerStyle={{...styles.buttonContainerHalfStyle, ...GlobalStyles.mr10}}
+                    containerStyle={{ ...styles.buttonContainerHalfStyle, ...GlobalStyles.mr10 }}
                     textStyle={styles.h5BoldDefault}>
                     <Icon
                       name='comment-alt'
@@ -454,7 +406,8 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
                   iconName='external-link-alt'
                   iconColor={BASE_COLORS.whiteColor}
                   buttonContainerStyle={styles.secondButtonStyle}
-                  titleStyle={styles.whiteText}></ButtonSecond>
+                  titleStyle={styles.whiteText}>
+                </ButtonSecond>
                 <ButtonSecond
                   isIconLeft={true}
                   title={t('copy_link')}
@@ -462,12 +415,14 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
                   iconName='copy'
                   iconColor={BASE_COLORS.whiteColor}
                   buttonContainerStyle={styles.secondButtonStyle}
-                  titleStyle={styles.whiteText}></ButtonSecond>
+                  titleStyle={styles.whiteText}>
+                </ButtonSecond>
               </View>
             )}
+
           </>
         )}
-      </ScrollView>
+      </ScrollView >
       {isVisible && (
         <ModalChangeDeadLine
           navigation={navigation}
@@ -476,27 +431,31 @@ const HomeDetailScreen = ({navigation, route}: Props) => {
           onHideModal={onModalVisible}
         />
       )}
-      {isVisibleExpire && (
-        <ModalExpire
-          isVisible={isVisibleExpire}
-          isDefault={false}
-          onHideModal={onModalExpireVisible}
-          navigation={navigation}
-          onModalVisible={onModalVisible}
-          onEnd={onEnd}
-        />
-      )}
-      {isVisibleEndAsk && (
-        <ModalEndAsk
-          isVisible={isVisibleEndAsk}
-          isDefault={false}
-          onHideModal={onEnd}
-          onEndAskNotFoundResponder={onEndAskNotFoundResponder}
-          navigation={navigation}
-          onFoundResponse={onFoundResponse}
-        />
-      )}
-    </View>
+      {
+        isVisibleExpire && (
+          <ModalExpire
+            isVisible={isVisibleExpire}
+            isDefault={false}
+            onHideModal={onModalExpireVisible}
+            navigation={navigation}
+            onModalVisible={onModalVisible}
+            onEnd={onEnd}
+          />
+        )
+      }
+      {
+        isVisibleEndAsk && (
+          <ModalEndAsk
+            isVisible={isVisibleEndAsk}
+            isDefault={false}
+            onHideModal={onEnd}
+            onEndAskNotFoundResponder={onEndAskNotFoundResponder}
+            navigation={navigation}
+            onFoundResponse={onFoundResponse}
+          />
+        )
+      }
+    </View >
   );
 };
 

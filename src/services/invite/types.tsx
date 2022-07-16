@@ -1,11 +1,5 @@
-import { IUser } from '../user/types';
-import { CountryCode } from 'react-native-country-picker-modal';
-
-export enum INVITE_STATUS {
-  NEW = 'new',
-  APPROVED = 'approved',
-  REVOKED = 'revoked',
-};
+import {IUser} from '../user/types';
+import {CountryCode} from 'react-native-country-picker-modal';
 
 export interface IInvite {
   code: string;
@@ -20,8 +14,13 @@ export interface IInvite {
   status: string;
   user: IUser | null;
   createdAt: string | undefined;
-  usesLeft?: number;
 }
+
+export const INVITE_STATUS = {
+  NEW: 'new',
+  APPROVED: 'approved',
+  REVOKED: 'revoked',
+};
 
 export interface IInviteFormData {
   name: string;
@@ -29,17 +28,3 @@ export interface IInviteFormData {
   countryCode: string;
   phoneNumber: string;
 }
-
-export interface ICreateInvitePayload {
-  maxUse?: number;
-}
-
-export enum ENetworkInvite {
-  Individual = 'individual',
-  MassInvite = 'massInvite',
-}
-
-export type TInviteState = {
-  isRequesting: boolean;
-  massInviteCode?: IInvite;
-};

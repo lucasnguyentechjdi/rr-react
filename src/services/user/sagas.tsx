@@ -22,20 +22,19 @@ import {
   IActionUserInfoRequested,
   IActionUserInfoSuccess,
 } from './types';
-import { all, call, delay, put, takeEvery } from 'redux-saga/effects';
+import {all, call, delay, put, takeEvery} from 'redux-saga/effects';
 
-import { IResult } from '../axios/types';
+import {IResult} from '../axios/types';
 import UserAPI from './apis';
-import { clearToken } from '~Root/services/storage';
-import { initAuthFailure } from '~Root/services/auth/actions';
+import {clearToken} from '~Root/services/storage';
+import {initAuthFailure} from '~Root/services/auth/actions';
 
 function* getUserInfo(payload: IActionUserInfoRequested) {
   try {
     // yield call(clearToken);
     const response: IActionUserInfoSuccess['payload'] = yield call(UserAPI.handleUserInfo);
     if (response?.success) {
-      console.log('heloooooooo', response)
-      yield put({ type: USER_INFO_SUCCESS, payload: response });
+      yield put({type: USER_INFO_SUCCESS, payload: response});
       payload?.callback &&
         payload?.callback({
           success: response?.success,
@@ -44,24 +43,24 @@ function* getUserInfo(payload: IActionUserInfoRequested) {
         });
     } else {
       yield call(clearToken);
-      yield put({ type: USER_INFO_FAILURE, payload: { error: response?.message } });
+      yield put({type: USER_INFO_FAILURE, payload: {error: response?.message}});
       payload?.callback &&
         payload?.callback({
           success: response?.success,
           error: response?.message,
         });
 
-      yield put(initAuthFailure({ error: response?.message }));
+      yield put(initAuthFailure({error: response?.message}));
     }
   } catch (error) {
     yield call(clearToken);
-    yield put({ type: USER_INFO_FAILURE, payload: { error: error } });
+    yield put({type: USER_INFO_FAILURE, payload: {error: error}});
     payload?.callback &&
       payload?.callback({
         success: false,
         error: error,
       });
-    yield put(initAuthFailure({ error: JSON.stringify(error) }));
+    yield put(initAuthFailure({error: JSON.stringify(error)}));
   }
 
   return payload;
@@ -71,9 +70,9 @@ function* getUserRefer(payload: IActionGetUserReferRequested) {
   try {
     yield delay(1000);
     const response: IActionGetUserReferSuccess = yield call(UserAPI.getUserRefer, payload?.payload);
-    yield put({ type: GET_USER_REFER_SUCCESS, payload: response?.payload });
+    yield put({type: GET_USER_REFER_SUCCESS, payload: response?.payload});
   } catch (error) {
-    yield put({ type: GET_USER_REFER_FAILURE, payload: { error: error } });
+    yield put({type: GET_USER_REFER_FAILURE, payload: {error: error}});
     payload?.callback && payload?.callback();
   }
 
@@ -83,10 +82,10 @@ function* getUserRefer(payload: IActionGetUserReferRequested) {
 function* updateUserProfile(payload: any) {
   try {
     const dataPayload: IResult = yield call(UserAPI.updateUserProfile, payload?.payload?.data);
-    yield put({ type: USER_INFO_REQUESTED, callback: () => { } });
+    yield put({type: USER_INFO_REQUESTED, callback: () => {}});
     payload?.callback(dataPayload);
   } catch (error) {
-    yield put({ type: UPDATE_USER_PROFILE_FAILURE, payload: { error: error } });
+    yield put({type: UPDATE_USER_PROFILE_FAILURE, payload: {error: error}});
     payload?.callback && payload?.callback();
   }
 
@@ -96,8 +95,8 @@ function* updateUserProfile(payload: any) {
 function* getUserInviteData(payload: any) {
   try {
     const response: IResult = yield call(UserAPI.getUserInviteData);
-    yield put({ type: GET_INVITE_DATA_SUCCESS, payload: response });
-  } catch (error) { }
+    yield put({type: GET_INVITE_DATA_SUCCESS, payload: response});
+  } catch (error) {}
 
   return payload;
 }
@@ -105,14 +104,9 @@ function* getUserInviteData(payload: any) {
 function* getUserNetworkData(payload: any) {
   try {
     const response: IResult = yield call(UserAPI.getUserNetworkData);
-    if (payload.payload) {
-      const res: IResult = yield call(UserAPI.getSuggestConnection);
-      response.data.unshift({
-        user: res.data,
-      });
-    }
-    yield put({ type: GET_NETWORK_DATA_SUCCESS, payload: response });
-  } catch (error) { }
+    yield put({type: GET_NETWORK_DATA_SUCCESS, payload: response});
+  } catch (error) {}
+
   return payload;
 }
 
@@ -120,11 +114,11 @@ function* getUserAskData(payload: any) {
   try {
     const response: IResult = yield call(UserAPI.getUserAskData, payload.payload);
     if (payload.payload.append) {
-      yield put({ type: GET_ASK_PAGE_DATA_SUCCESS, payload: response.data });
+      yield put({type: GET_ASK_PAGE_DATA_SUCCESS, payload: response.data});
       return;
     }
-    yield put({ type: GET_ASK_DATA_SUCCESS, payload: response.data });
-  } catch (error) { }
+    yield put({type: GET_ASK_DATA_SUCCESS, payload: response.data});
+  } catch (error) {}
 
   return payload;
 }

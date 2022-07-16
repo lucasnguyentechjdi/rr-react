@@ -16,7 +16,7 @@ export default StyleSheet.create({
   },
   picker: {
     backgroundColor: BASE_COLORS.oxleyColor,
-    color: BASE_COLORS.greyBlue,
+    color: BASE_COLORS.whiteColor,
     paddingTop: 8,
     paddingBottom: 8,
     paddingLeft: 14,
@@ -33,7 +33,7 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   pickerItemStyle: {
-    color: BASE_COLORS.greyBlue,
+    color: BASE_COLORS.whiteColor,
     textTransform: 'uppercase',
     backgroundColor: BASE_COLORS.greyColor,
   },
@@ -123,8 +123,8 @@ export default StyleSheet.create({
     fontWeight: 'bold',
   },
   styleModal: {
-    // ...GlobalStyles.ph15,
-    // ...GlobalStyles.pt15,
+    ...GlobalStyles.ph15,
+    ...GlobalStyles.pt15,
     backgroundColor: BASE_COLORS.greyBlue,
     borderRadius: 15,
   },

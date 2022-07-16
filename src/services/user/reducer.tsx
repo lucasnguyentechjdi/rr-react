@@ -10,7 +10,6 @@ import {
   GET_USER_REFER_SUCCESS,
   LOG_OUT_SUCCESS,
   ON_REVOKE_INVITE,
-  REMOVE_SUGGESTION,
   SET_DATA_USER_INFO,
   SET_USER_INDUSTRY,
   SET_USER_PROFILE,
@@ -46,7 +45,6 @@ const defaultUser = {
   title: '',
   avatar: '',
   sellToAllBusiness: true,
-  isSuggest: false,
   token: '',
 };
 
@@ -155,8 +153,6 @@ const userReducer = (state: IUserState = initialState, action: IActionsUser): IU
       return { ...state, asks: [...action?.payload.data], askPagination: action?.payload.metadata };
     case GET_ASK_PAGE_DATA_SUCCESS:
       return { ...state, asks: mergeUnique(state.asks, action?.payload.data), askPagination: action?.payload.metadata };
-    case REMOVE_SUGGESTION:
-      return { ...state, userInfo: { ...state?.userInfo, isSuggest: false } };
     case LOG_OUT_SUCCESS:
       void messaging()
         .unsubscribeFromTopic(state.userInfo.code)

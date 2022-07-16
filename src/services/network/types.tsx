@@ -1,4 +1,4 @@
-import { IUser } from '../user/types';
+import {IUser} from '../user/types';
 
 export interface INetwork {
   parentCode: string;

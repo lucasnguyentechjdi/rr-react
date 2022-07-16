@@ -10,7 +10,6 @@ import {
   GET_USER_REFER_SUCCESS,
   LOG_OUT_SUCCESS,
   ON_REVOKE_INVITE,
-  REMOVE_SUGGESTION,
   SET_DATA_USER_INFO,
   SET_USER_INDUSTRY,
   SET_USER_PROFILE,
@@ -24,13 +23,13 @@ import {
   USER_INFO_REQUESTED,
   USER_INFO_SUCCESS,
 } from './constants';
-import { IAsk, IAskForm } from '~Root/services/ask/types';
+import {IAsk, IAskForm} from '~Root/services/ask/types';
 
-import { CountryCode } from 'react-native-country-picker-modal';
-import { IFeedInfoState } from '~Root/services/feed/types';
-import { IIndustry } from '~Root/services/industry/types';
-import { IInvite } from '../invite/types';
-import { INetwork } from '../network/types';
+import {CountryCode} from 'react-native-country-picker-modal';
+import {IFeedInfoState} from '~Root/services/feed/types';
+import {IIndustry} from '~Root/services/industry/types';
+import {IInvite} from '../invite/types';
+import {INetwork} from '../network/types';
 
 export interface IUser {
   code: string;
@@ -52,7 +51,6 @@ export interface IUser {
   avatar: string;
   inviteMax: number;
   token: string;
-  isSuggest?: boolean;
 }
 
 export interface IMyAskDefault {
@@ -366,10 +364,6 @@ export interface IActionGetAskPageSuccess {
   };
 }
 
-export interface IActionRemoveSuggestion {
-  type: typeof REMOVE_SUGGESTION;
-}
-
 export type IActionsUser =
   | IActionUserInfoRequested
   | IActionUserInfoSuccess
@@ -393,5 +387,4 @@ export type IActionsUser =
   | IActionLogOut
   | IActionChangeSellAllBusiness
   | IActionGetAskSuccess
-  | IActionGetAskPageSuccess
-  | IActionRemoveSuggestion;
+  | IActionGetAskPageSuccess;

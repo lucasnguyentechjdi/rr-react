@@ -59,7 +59,7 @@ const GuestProfileScreen = ({ navigation, route }: Props) => {
     if (result.success) {
       dispatch(onRevokeInvite(null));
       dispatch(getUserInviteData());
-      dispatch(getUserNetworkData(userInfo?.isSuggest));
+      dispatch(getUserNetworkData());
       showConfirm(false);
       onBack();
     }

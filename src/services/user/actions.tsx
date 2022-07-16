@@ -10,7 +10,6 @@ import {
   ON_CHANGE_RESPONDER,
   ON_REMOVE_INVITE,
   ON_REVOKE_INVITE,
-  REMOVE_SUGGESTION,
   SET_DATA_USER_INFO,
   SET_USER_INDUSTRY,
   SET_USER_PROFILE,
@@ -18,12 +17,12 @@ import {
   SET_USER_PROFILE_REFER,
   SET_USER_PROFILE_TEMP,
   UPDATE_USER_PROFILE_REQUESTED,
-  USER_INFO_REQUESTED
+  USER_INFO_REQUESTED,
 } from './constants';
-import { IActionSetDataUserInfo, IAvatar, IProfileNew, IUser } from './types';
+import {IActionSetDataUserInfo, IAvatar, IProfileNew, IUser} from './types';
 
-import { INetwork } from '~Root/services/network/types';
-import { IInvite } from '../invite/types';
+import {IInvite} from '../invite/types';
+import {INetwork} from '~Root/services/network/types';
 
 export const userInfoRequest = (callback?: (item: any) => void) => {
   return {
@@ -113,7 +112,7 @@ export const setUserIndustry = (payload: IUser) => {
   };
 };
 
-export const deleteUserIndustry = (payload: { index: number; target: string }) => {
+export const deleteUserIndustry = (payload: {index: number; target: string}) => {
   return {
     type: DELETE_DATA_INDUSTRY,
     payload,
@@ -126,10 +125,9 @@ export const getUserInviteData = () => {
   };
 };
 
-export const getUserNetworkData = (payload: boolean | undefined) => {
+export const getUserNetworkData = () => {
   return {
     type: GET_NETWORK_DATA,
-    payload,
   };
 };
 
@@ -141,25 +139,19 @@ export const onRemoveInvite = (payload: IInvite | null) => {
 };
 
 export const onLogout = () => {
-  return { type: LOG_OUT_SUCCESS, payload: true };
+  return {type: LOG_OUT_SUCCESS, payload: true};
 };
 
 export const onChangeSellAllBusiness = (payload: boolean) => {
-  return { type: CHANGE_SELL_ALL_BUSINESS, payload };
+  return {type: CHANGE_SELL_ALL_BUSINESS, payload};
 };
 
 export const getUserAskData = (page: number, limit: number, append = false) => {
   return {
     type: GET_ASK_DATA,
-    payload: { page, limit, append },
+    payload: {page, limit, append},
   };
 };
-
-export const removeSuggestion = () => {
-  return {
-    type: REMOVE_SUGGESTION,
-  };
-}
 
 export const getFullName = (user?: IUser) => {
   return `${user?.firstName ?? ''} ${user?.lastName ?? ''}`;

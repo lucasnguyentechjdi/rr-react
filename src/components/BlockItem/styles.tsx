@@ -1,7 +1,7 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
-import { BASE_COLORS, BASE_FONTS, BASE_STYLES, GlobalStyles } from '~Root/config';
-import { adjust } from '~Root/utils';
+import {BASE_COLORS, BASE_FONTS, BASE_STYLES, GlobalStyles} from '~Root/config';
+import {adjust} from '~Root/utils';
 
 export default StyleSheet.create({
   contain: {
@@ -10,6 +10,8 @@ export default StyleSheet.create({
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
+    width: '100%',
+    flex: 1,
     flexWrap: 'wrap',
     overflow: 'hidden',
     backgroundColor: BASE_COLORS.whiteColor,
@@ -17,17 +19,6 @@ export default StyleSheet.create({
   itemContainer: {
     flex: 1,
     alignItems: 'flex-start',
-  },
-  itemSuggestionContainer: {
-    borderWidth: 1,
-    borderColor: BASE_COLORS.blackColor,
-    borderRadius: adjust(22),
-    padding: adjust(12),
-    width: '100%',
-  },
-  itemSuggestionHeader: {
-    width: '100%',
-    paddingHorizontal: adjust(5),
   },
   textNormal: {
     fontFamily: BASE_FONTS.regular,
@@ -108,10 +99,6 @@ export default StyleSheet.create({
     borderRadius: adjust(24),
     backgroundColor: BASE_COLORS.steelBlueColor,
     fontWeight: '600',
-  },
-  pendingAdd: {
-    paddingHorizontal: adjust(20),
-    fontSize: adjust(10),
   },
   profileContainer: {
     ...GlobalStyles.flexRow,

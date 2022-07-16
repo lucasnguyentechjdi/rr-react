@@ -37,7 +37,7 @@ const YourAsksScreen = ({ navigation }: Props) => {
     useEffect(() => {
         if (authState?.isLoggedIn && userState?.userInfo?.profileCompleted) {
             dispatch(getUserInviteData());
-            dispatch(getUserNetworkData(userState.userInfo?.isSuggest));
+            dispatch(getUserNetworkData());
             const page = userState?.askPagination?.pageCurrent ?? 1;
             const limit = userState?.askPagination?.recordPerPage ?? 50;
             dispatch(getUserAskData(page, limit));

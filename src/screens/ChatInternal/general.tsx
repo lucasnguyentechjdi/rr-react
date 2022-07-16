@@ -1,27 +1,26 @@
 import React, {useCallback, useContext, useEffect, useState} from 'react';
-import {Keyboard, Platform, TextInput, TouchableOpacity, View} from 'react-native';
+import {TextInput, TouchableOpacity, View, Keyboard, Platform} from 'react-native';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {AppRoute} from '~Root/navigation/AppRoute';
 
+import {HeaderNormalBlue, Icon, Paragraph, ModalDialogCommon, Image} from '~Root/components';
+import {BASE_COLORS, GlobalStyles, IMAGES} from '~Root/config';
+import {adjust} from '~Root/utils';
+import styles from './styles';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import ImagePicker, {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import Toast from 'react-native-toast-message';
-import {useDispatch, useSelector} from 'react-redux';
-import {Image, ModalDialogCommon, Paragraph} from '~Root/components';
-import ChatMessages from '~Root/components/ChatMessages';
-import UserAvatar from '~Root/components/UserAvatar';
-import {GlobalStyles, IMAGES} from '~Root/config';
 import {RootNavigatorParamsList} from '~Root/navigation/config';
+import {useDispatch, useSelector} from 'react-redux';
+import {IGlobalState} from '~Root/types';
+import {CHAT_MEMBER_ROLE, CHAT_MEMBER_STATUS, CHAT_TYPE} from '~Root/services/chat/types';
+import {uploadImage} from '~Root/services/upload';
 import {getChatMessageData, sendChatMessage, updateChatData} from '~Root/services/chat/actions';
-import {CHAT_TYPE} from '~Root/services/chat/types';
+import ChatMessages from '~Root/components/ChatMessages';
 import {SocketContext} from '~Root/services/socket/context';
 import {emitJoinRoom, emitLeftRoom} from '~Root/services/socket/emit';
 import {listenError} from '~Root/services/socket/listen';
-import {uploadImage} from '~Root/services/upload';
-import {IGlobalState} from '~Root/types';
-import PaperClip from './icons/PaperClip';
-import PaperPlan from './icons/PaperPlan';
-import styles from './styles';
+import Toast from 'react-native-toast-message';
+import ImagePicker, {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import UserAvatar from '~Root/components/UserAvatar';
 
 type Props = NativeStackScreenProps<RootNavigatorParamsList, AppRoute.CHAT_INTERNAL>;
 
@@ -220,46 +219,51 @@ const ChatGeneralInternalScreen = ({navigation, route}: Props) => {
 
   return (
     <View style={GlobalStyles.containerWhite}>
-      <View style={[GlobalStyles.fullWidth, GlobalStyles.ph30, GlobalStyles.pv20, styles.chatInternalHeader]}>
-        <View style={[GlobalStyles.flexRow, GlobalStyles.justifyBetween, GlobalStyles.alignCenter, GlobalStyles.mb10]}>
-          <TouchableOpacity onPress={onBack}>
-            <Image source={IMAGES.iconBack} style={GlobalStyles.iconBack} />
-          </TouchableOpacity>
+      <HeaderNormalBlue onBack={onBack} isBackButton={false}>
+        <TouchableOpacity onPress={onBack} style={[styles.closeBtn, GlobalStyles.mr10, GlobalStyles.mt10]}>
+          <Icon name='times' size={adjust(15)} color={BASE_COLORS.whiteColor} />
+        </TouchableOpacity>
+        <View style={[GlobalStyles.flexRow, GlobalStyles.ph15]}>
           <TouchableOpacity
             onPress={goToContextSwitch}
             style={[GlobalStyles.avatarContainer, GlobalStyles.mr10, GlobalStyles.mt10]}>
             <Image source={IMAGES.iconChatHamburger} style={styles.hamburger} />
           </TouchableOpacity>
-        </View>
-        <View style={[GlobalStyles.flexRow, GlobalStyles.alignCenter]}>
-          <View>
+          <View style={GlobalStyles.mr10}>
             <UserAvatar user={withUser?.user} size={60} imageSize={80} />
           </View>
-          <View style={styles.chatUserInfo}>
+          <View style={GlobalStyles.flexColumn}>
             <Paragraph
               bold600
               textWhite
-              h4
+              h3
               title={`${withUser?.user?.firstName ?? ''} ${withUser?.user?.lastName ?? ''}`.toUpperCase()}
+              style={GlobalStyles.mb15}
             />
-            <Paragraph textWhite h5 title={`${withUser?.user?.title}`} />
           </View>
         </View>
-      </View>
+      </HeaderNormalBlue>
       <View style={[GlobalStyles.container, styles.relativeBlock]}>
         <SafeAreaView style={[GlobalStyles.container, styles.relativeBlock]} edges={['right', 'left']}>
           <View style={styles.contentContainer}>
             <ChatMessages />
           </View>
-          <View style={[GlobalStyles.flexRow, styles.messageContainer, {marginBottom: keyboardOffset}]}>
+          <View
+            style={[
+              GlobalStyles.flexRow,
+              styles.messageContainer,
+              {
+                marginBottom: keyboardOffset,
+              },
+            ]}>
             <TouchableOpacity onPress={onUpdateAttachments}>
-              <PaperClip />
+              <Icon name='paperclip' size={adjust(12)} color={BASE_COLORS.whiteColor} />
             </TouchableOpacity>
             <View style={styles.inputContainer}>
               <TextInput placeholder='Message' value={message} style={[styles.input]} onChangeText={onInputChange} />
             </View>
             <TouchableOpacity onPress={onSendMessage}>
-              <PaperPlan />
+              <Icon name='paper-plane' size={adjust(12)} color={BASE_COLORS.whiteColor} />
             </TouchableOpacity>
           </View>
         </SafeAreaView>

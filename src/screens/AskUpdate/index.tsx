@@ -1,15 +1,17 @@
 import {BASE_COLORS, GlobalStyles} from '~Root/config';
-import {HeaderSmallBlue, Loading, Paragraph, Icon, ModalDialogCommon} from '~Root/components';
-import {KeyboardAvoidingView, Platform, ScrollView, View, Text, TouchableOpacity} from 'react-native';
+import {HeaderSmallBlue, Loading, Paragraph} from '~Root/components';
+import {KeyboardAvoidingView, Platform, ScrollView, View} from 'react-native';
 import React, {useEffect} from 'react';
 import {getAskDropDown, onChangeAskType} from '~Root/services/ask/actions';
 import {hideLoading, showLoading} from '~Root/services/loading/actions';
 import {useDispatch, useSelector} from 'react-redux';
+
 import {AppRoute} from '~Root/navigation/AppRoute';
 import {IAskType} from '~Root/services/askType/types';
 import {IGlobalState} from '~Root/types';
 import {MainNavigatorParamsList} from '~Root/navigation/config';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Picker} from '@react-native-picker/picker';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import Template from '../CreateAsk/Template';
 import {adjust} from '~Root/utils';
@@ -26,7 +28,6 @@ const AskUpdateScreen = ({navigation}: Props) => {
     ios: 0,
     android: adjust(20),
   });
-  const [showSelectModal, setShowSelectModal] = React.useState(false);
 
   const dispatch = useDispatch();
   const {dataDropDown, selected, data_ask_selected} = useSelector((state: IGlobalState) => state.askState);
@@ -54,13 +55,15 @@ const AskUpdateScreen = ({navigation}: Props) => {
   }, [dataDropDown]);
 
   const onChangeDropDown = (itemValue: any) => {
-    setShowSelectModal(false);
     if (!itemValue) {
       dispatch(onChangeAskType({selected: null}));
       return;
     }
-    dispatch(onChangeAskType({selected: itemValue}));
+    const item = dataDropDown?.find((item: IAskType) => item.code === itemValue);
+    if (!item) return;
+    dispatch(onChangeAskType({selected: item}));
   };
+
   return (
     <View style={GlobalStyles.containerWhite}>
       <HeaderSmallBlue onBack={onBack} isBackButton={true} title={`${t('update_ask')}`} />
@@ -72,52 +75,24 @@ const AskUpdateScreen = ({navigation}: Props) => {
           <ScrollView style={GlobalStyles.container}>
             <View style={[GlobalStyles.flexColumn, GlobalStyles.mh15, GlobalStyles.mb65]}>
               <Paragraph h5 textBlack title='I am...' style={[GlobalStyles.mv15, styles.title]} />
-              <TouchableOpacity
-                onPress={() => setShowSelectModal(true)}
-                style={[styles.pickerContainer, GlobalStyles.mb15]}>
-                <View style={styles.picker}>
-                  <Text style={styles.pickerText}>{selected ? selected.name : 'PURPOSE OF ASK'}</Text>
-                  <Icon name='caret-down' size={adjust(20)} color={BASE_COLORS.whiteColor} />
-                </View>
-              </TouchableOpacity>
-             {selected && <Template data={selected} navigation={navigation} />}
+              <View style={[styles.pickerContainer, GlobalStyles.mb15]}>
+                <Picker
+                  style={styles.picker}
+                  itemStyle={styles.pickerItemStyle}
+                  dropdownIconColor={BASE_COLORS.whiteColor}
+                  selectedValue={selected?.code ?? ''}
+                  onValueChange={onChangeDropDown}>
+                  <Picker.Item key={`dropdown-0`} label={'PURPOSE OF ASK'} value='' />
+                  {dataDropDown?.map((item: IAskType, index: number) => (
+                    <Picker.Item key={item.code} label={item.name} value={item.code} />
+                  ))}
+                </Picker>
+              </View>
+              {selected && <Template data={selected} navigation={navigation} />}
             </View>
           </ScrollView>
         </KeyboardAvoidingView>
       </SafeAreaView>
-      {showSelectModal && (
-        <ModalDialogCommon
-          isVisible={showSelectModal}
-          onHideModal={() => setShowSelectModal(false)}
-          isDefault={false}
-          styleModal={styles.styleModal}
-          styleModalContainer={styles.styleModalContainer}>
-          <View style={styles.optionList}>
-            <TouchableOpacity onPress={() => onChangeDropDown(null)}>
-              <View style={styles.optionItem}>
-                <Paragraph h5 title={'PURPOSE OF ASK'} style={styles.optionTitle} />
-              </View>
-            </TouchableOpacity>
-            {dataDropDown?.map((item: any) => {
-              if(item.code!=="askType-4"){
-                return (
-                  <TouchableOpacity onPress={() => onChangeDropDown(item)}>
-                    <View style={styles.optionItem}>
-                      <Paragraph h5 title={item.name} style={styles.optionTitle} />
-                    </View>
-                  </TouchableOpacity>
-                )
-              }
-              else{
-                return (
-                  <></>
-                )
-              }
-            }
-            )}
-          </View>
-        </ModalDialogCommon>
-      )}
       <Loading />
     </View>
   );

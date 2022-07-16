@@ -22,7 +22,6 @@ const styles = {
       ...containerStyle,
     },
     text: {
-      fontWeight: '600',
       color: color.white,
       ...textStyle,
     },
@@ -32,7 +31,6 @@ const styles = {
       ...containerStyle,
     },
     text: {
-      fontWeight: '600',
       color: color.white,
       ...textStyle,
     },

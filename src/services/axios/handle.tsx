@@ -8,7 +8,7 @@ export const handleResponse = (response: IResponse, message?: string) => {
   if (response.data.errCode) {
     return {
       data: response.data.errCode,
-      message: response.data.errDetail || '',
+      message: response.data.errDetail,
       success: false,
     };
   }

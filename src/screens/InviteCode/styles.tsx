@@ -1,7 +1,7 @@
 import {BASE_COLORS, BASE_FONTS, BASE_STYLES, GlobalStyles} from '~Root/config';
 import {adjust, lineHeightByRatio} from '~Root/utils';
 
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   container: {
@@ -78,27 +78,4 @@ export default StyleSheet.create({
     flexWrap: 'wrap',
     justifyContent: 'center',
   },
-  btn: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
-    width: adjust(220),
-    borderRadius: adjust(24),
-  },
-  outlineBtn: {
-    marginTop: 10,
-    backgroundColor: BASE_COLORS.whiteColor,
-    borderColor: BASE_COLORS.oxleyColor,
-    borderWidth: 1,
-  },
-  textSteelBlueColor: {
-    color: BASE_COLORS.oxleyColor,
-  },
-  qrContainer: {
-    height: Dimensions.get('window').height
-  },
-  qrTopViewStyle: {
-    flex: 0,
-    height: 0,
-  }
 });

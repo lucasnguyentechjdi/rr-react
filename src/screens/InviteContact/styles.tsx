@@ -96,8 +96,5 @@ export default StyleSheet.create({
     backgroundColor: '#679C79',
     width: '100%',
     height: adjust(1),
-  },
-  tabGroup: {
-    paddingTop: adjust(12),
   }
 });

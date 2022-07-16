@@ -6,17 +6,10 @@ import {adjust} from '~Root/utils';
 const screenHeight = Dimensions.get('window').height;
 const screenWidth = Dimensions.get('window').width;
 export default StyleSheet.create({
-  chatInternalHeader: {
-    backgroundColor: BASE_COLORS.steelBlue,
-  },
   imageProfile: {
     width: adjust(80),
     height: adjust(80),
     borderRadius: adjust(160),
-  },
-  chatUserInfo: {
-    ...GlobalStyles.ml20,
-    flex: 1,
   },
   itemCenter: {
     justifyContent: 'center',
@@ -43,6 +36,7 @@ export default StyleSheet.create({
   },
   contentContainer: {
     flex: 1,
+    justifyContent: 'flex-end',
   },
   relativeBlock: {
     position: 'relative',
@@ -92,19 +86,19 @@ export default StyleSheet.create({
     ...GlobalStyles.pv10,
     backgroundColor: BASE_COLORS.steelBlueColor,
     alignItems: 'center',
-    justifyContent: 'space-between',
     zIndex: 99,
   },
   inputContainer: {
     ...GlobalStyles.mh15,
     ...GlobalStyles.ph10,
     flex: 1,
-    backgroundColor: BASE_COLORS.whiteColor,
+    backgroundColor: BASE_COLORS.greyColor,
     borderRadius: adjust(100),
     alignItems: 'flex-start',
   },
   input: {
     fontWeight: '600',
+    color: BASE_COLORS.gunmetalColor,
     width: '100%',
     fontSize: adjust(12),
     padding: adjust(8),
@@ -164,9 +158,15 @@ export default StyleSheet.create({
     fontFamily: BASE_FONTS.semiBold,
     fontSize: adjust(12),
   },
+  closeBtn: {
+    position: 'absolute',
+    top: adjust(-25),
+    right: adjust(10),
+    fontSize: adjust(20),
+  },
   hamburger: {
-    width: adjust(24),
-    height: adjust(24),
+    width: adjust(32),
+    height: adjust(32),
   },
   imageButton: {
     ...GlobalStyles.pv15,

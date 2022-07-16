@@ -9,7 +9,6 @@ import color from './color';
 import Time from './time';
 import {imageUrl} from '~Root/services/upload';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { BASE_COLORS, GlobalStyles } from '~Root/config';
 
 const styles = {
   left: StyleSheet.create({
@@ -18,9 +17,8 @@ const styles = {
       alignItems: 'flex-start',
     },
     wrapper: {
-      ...GlobalStyles.p5,
       borderRadius: 20,
-      backgroundColor: BASE_COLORS.steelBlue,
+      backgroundColor: '#4683AEBF',
       marginRight: 60,
       minHeight: 20,
       justifyContent: 'flex-end',
@@ -47,10 +45,9 @@ const styles = {
       alignItems: 'flex-end',
     },
     wrapper: {
-      ...GlobalStyles.p5,
       position: 'relative',
       borderRadius: 20,
-      backgroundColor: BASE_COLORS.oxleyColor,
+      backgroundColor: '#679C79BF',
       marginLeft: 60,
       minHeight: 20,
       justifyContent: 'flex-end',
@@ -144,6 +141,7 @@ const Bubble = ({item, position}: Props) => {
       <View style={[styles[position].wrapper]}>
         {renderBubbleContent()}
         <View style={[styles[position].bottom]}>
+          {renderUsername()}
           {renderTime()}
         </View>
       </View>

@@ -3,7 +3,7 @@ import axios from '~Root/services/axios';
 import i18n from 'i18next';
 
 import * as API from '~Root/private/api';
-import { handleResponse } from '../axios/handle';
+import {handleResponse} from '../axios/handle';
 
 const data = [
   {
@@ -206,7 +206,7 @@ export default class UserAPI {
     }
   }
 
-  static async getUserAskData({ page = 1, limit = 10 }) {
+  static async getUserAskData({page = 1, limit = 10}) {
     try {
       const response = await axios({
         method: 'GET',
@@ -219,46 +219,6 @@ export default class UserAPI {
       return handleResponse(response);
     } catch (error) {
       console.log('error=======', error);
-      return {
-        data: null,
-        message: error,
-        success: false,
-      };
-    }
-  }
-
-  static async getSuggestConnection() {
-    try {
-      const response = await axios({
-        method: 'GET',
-        url: API.SUGGEST_CONNECTION,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return handleResponse(response);
-    } catch (error) {
-      console.log('error=======', error);
-      return {
-        data: null,
-        message: error,
-        success: false,
-      };
-    }
-  }
-
-  static async handleSuggestConnection(payload: { isAccepted: boolean }) {
-    try {
-      const response = await axios({
-        method: 'POST',
-        url: API.SUGGEST_CONNECTION,
-        data: payload,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-      return handleResponse(response);
-    } catch (error) {
       return {
         data: null,
         message: error,

@@ -23,6 +23,7 @@ export default StyleSheet.create({
   },
   modal: {
     ...GlobalStyles.ph15,
+    ...GlobalStyles.pb30,
     backgroundColor: BASE_COLORS.whiteColor,
     borderRadius: adjust(48),
     flex: 0.9,
@@ -86,7 +87,7 @@ export default StyleSheet.create({
     width: '95%',
   },
   btnDone: {
-    ...GlobalStyles.mt10,
+    ...GlobalStyles.mt15,
     ...GlobalStyles.ph40,
     ...GlobalStyles.pv15,
     backgroundColor: BASE_COLORS.oxleyColor,

@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/promise-function-async */
-import React, {useCallback, useState} from 'react';
-import {PermissionsAndroid, ScrollView, TouchableOpacity, View} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import ImagePicker, {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import React, { useCallback, useState } from 'react';
+import { PermissionsAndroid, ScrollView, TouchableOpacity, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import ImagePicker, { launchCamera, launchImageLibrary } from 'react-native-image-picker';
 
-import {setUserProfileAvatar} from '~Root/services/user/actions';
-import {GlobalStyles} from '~Root/config';
-import {HeaderProfileBlue, ModalDialogCommon, Paragraph} from '~Root/components';
+import { setUserProfileAvatar } from '~Root/services/user/actions';
+import { GlobalStyles } from '~Root/config';
+import { HeaderProfileBlue, ModalDialogCommon, Paragraph } from '~Root/components';
 import styles from './styles';
-import {IUserState} from '~Root/services/user/types';
-import {useDispatch, useSelector} from 'react-redux';
-import {IGlobalState} from '~Root/types';
-import {DOWNLOAD_IMAGE_URL} from '~Root/private/api';
+import { IUserState } from '~Root/services/user/types';
+import { useDispatch, useSelector } from 'react-redux';
+import { IGlobalState } from '~Root/types';
+import { DOWNLOAD_IMAGE_URL } from '~Root/private/api';
 
 interface Action {
   title: string;
@@ -49,16 +49,10 @@ const actions: Action[] = [
 interface Props {
   onBack: () => void;
   isBackButton?: boolean;
-  isEdit?: boolean;
   children?: React.ReactNode;
 }
 
-const ProfileTemplateScreen: React.FC<Props> = ({
-  onBack = () => {},
-  isBackButton = false,
-  isEdit = false,
-  children,
-}) => {
+const ProfileTemplateScreen: React.FC<Props> = ({ onBack = () => { }, isBackButton = false, children }) => {
   const userState: IUserState = useSelector((state: IGlobalState) => state.userState);
   const dispatch = useDispatch();
   const [visibleModal, setVisibleModal] = useState(false);
@@ -135,21 +129,21 @@ const ProfileTemplateScreen: React.FC<Props> = ({
             profilePhoto={getAvatar()}
             onBack={onBack}
             onUpdate={onUpdate}
-            isEdit={isEdit}
           />
           <ScrollView
             style={[styles.scrollViewWhite]}
             showsHorizontalScrollIndicator={false}
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps={'handled'}
-            contentContainerStyle={GlobalStyles.scrollViewContentContainer}>
+            contentContainerStyle={GlobalStyles.scrollViewContentContainer}
+          >
             {children}
           </ScrollView>
         </>
       </SafeAreaView>
       {visibleModal && (
         <ModalDialogCommon isVisible={visibleModal} onHideModal={onUpdate} isDefault={false}>
-          {actions.map(({title, type, options}) => (
+          {actions.map(({ title, type, options }) => (
             <TouchableOpacity key={type} onPress={() => onButtonPress(type, options)} style={styles.imageButton}>
               <Paragraph h5 title={title} />
             </TouchableOpacity>

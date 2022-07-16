@@ -14,11 +14,6 @@ export const ROOT_URL = 'https://referreach.np-platform.com';
 export const ROOT_API_URL = 'https://referreach.np-platform.com/api';
 export const SOCKET_URL = 'https://referreach.np-platform.com';
 
-// For local
-//export const ROOT_URL = 'http://10.0.2.2';
-//export const ROOT_API_URL = 'http://10.0.2.2/api';
-//export const SOCKET_URL = 'http://10.0.2.2';
-
 export const LOGIN_URL = `${ROOT_API_URL}/v1/user/login`;
 
 export const REGISTER_URL = `${ROOT_API_URL}/v1/user/register`;
@@ -31,13 +26,11 @@ export const UPDATE_PROFILE_URL = `${ROOT_API_URL}/v1/me`;
 export const UPLOAD_IMAGE_URL = `${ROOT_API_URL}/v1/upload-image`;
 export const DOWNLOAD_IMAGE_URL = (file: string) => `${ROOT_API_URL}/v1/download-image?fileKey=${file}`;
 export const USER_INFO_URL = `${ROOT_API_URL}/v1/me`;
-export const SUGGEST_CONNECTION = `${ROOT_API_URL}/v1/suggest`;
 export const INVITE_DATA_URL = `${ROOT_API_URL}/v1/invite`;
 export const INVITE_INCREASE_URL = `${ROOT_API_URL}/v1/invite/request`;
 export const INVITE_LINK_URL = (code: string) => `${ROOT_API_URL}/v1/invite/link/${code}`;
 export const REMOVE_NETWORK_URL = (code: string) => `${ROOT_API_URL}/v1/network/${code}`;
 export const REMOVE_INVITE_URL = (code: string) => `${ROOT_API_URL}/v1/invite/${code}`;
-export const CANCEL_INVITE_URL = (code: string) => `${ROOT_API_URL}/v1/invite/${code}/cancel`;
 export const CLAIM_INVITE_URL = (code: string) => `${ROOT_API_URL}/v1/invite/claim/${code}`;
 export const REFRESH_INVITE_URL = (code: string) => `${ROOT_API_URL}/v1/invite/secret/${code}`;
 export const NETWORK_DATA_URL = `${ROOT_API_URL}/v1/network`;
